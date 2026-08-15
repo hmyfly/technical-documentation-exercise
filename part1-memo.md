@@ -41,7 +41,7 @@ Dual-Consumer Execution Standard: Every operational guide must open with an upfr
 
 ---
 
-### 2. Restructure Reference Pages Around Developer Tasks, Not API Shape
+### Quantitative Telemetry & Observability
 
 **Problem:** Reference documentation organized by API structure (e.g., "The Messages endpoint accepts these parameters") is necessary but not sufficient. Developers commonly arrive at docs with a task in mind ("How do I stream a response?", "How do I pass an image?") and need a path that doesn't require them to read the entire reference to answer a specific question.
 
