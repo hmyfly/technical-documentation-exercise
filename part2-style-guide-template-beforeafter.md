@@ -78,6 +78,19 @@ curl -L [https://claude.com/assets/skills/](https://claude.com/assets/skills/)<P
 cd <PRIMITIVE_SLUG>-template
 ```
 ---
+#### Package Anatomy
+```text
+<PRIMITIVE_SLUG>-template/
+├── SKILL.md              # [REQUIRED] Frontmatter schema contract & operational prompt
+├── scripts/              # [OPTIONAL] Validated deterministic helper binaries
+│   └── run.py
+├── references/           # [OPTIONAL] Machine-readable payloads (JSON/YAML)
+│   └── tokens.json
+└── test_manifest.py     # [REQUIRED] Pre-commit schema assertion test
+```
+
+
+
 
 ## Before/After Page Revision
 
