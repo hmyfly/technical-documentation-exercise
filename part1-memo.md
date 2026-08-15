@@ -45,8 +45,6 @@ Dual-Consumer Execution Standard: Every operational guide must open with an upfr
 
 Documentation effectiveness is measured by task completion velocity and schema integrity across data warehouse telemetry and automated CI logs:
 
-**Recommendation:** Introduce a layered documentation structure:
-
 | Core Metric | SLA Target | Diagnostic Signal & Calculation |
 |---|---|---|
 | Doc-to-Run Latency | < 45s | Time delta between page load and initial code-copy or package download event |
@@ -54,38 +52,9 @@ Documentation effectiveness is measured by task completion velocity and schema i
 | Schema Pass Rate | > 95% | Ratio of valid Skill manifests vs. client parse rejections in app telemetry |
 | Snippet Execution Drift (SED) | 0 build errors | Nightly headless CI job executing doc snippets and MWE packages against the Claude API |
 
-This is the Diátaxis framework, widely adopted by API documentation teams (Stripe, Twilio, Kubernetes). It separates *learning* content from *doing* content from *understanding* content—matching what developers actually need at each stage.
-
-**Expected Outcome:** Reduced time-to-success for developers encountering a specific capability for the first time; clearer ownership of which page type serves which user need.
-
 ---
 
-### 3. Establish a Systematic "Documentation Debt" Review Cycle
-
-**Problem:** API documentation ages faster than most content. Model behavior changes, new parameters are added, default values are updated, and rate limits evolve. Without a proactive review process, pages accumulate inaccuracies that erode developer trust.
-
-**Recommendation:** Introduce a lightweight quarterly documentation audit:
-
-- Tag each documentation page with the API version and last-verified date in its frontmatter.
-- Generate a report of pages not verified against the current API in the past 90 days.
-- Assign ownership: every significant API surface (Messages, Files, Batches, etc.) has a named documentation owner responsible for accuracy.
-- Treat documentation updates as part of the definition of done for any new API feature—no feature ships without corresponding docs review.
-
-**Expected Outcome:** Measurably more accurate documentation over time; reduced volume of developer support tickets about outdated examples; stronger accountability across the team.
-
----
-
-## Prioritization
-
-| Recommendation | Impact | Effort | Priority |
-|---|---|---|---|
-| Docs as code + CI linting | High | Medium | **Start now** |
-| Task-oriented restructure | High | High | **Next quarter** |
-| Documentation debt audit | Medium | Low | **Start now** |
-
----
-
-## Conclusion
+### Conclusion
 
 Documentation is a product, and it should be treated with the same rigor as the API it describes. The three recommendations above are mutually reinforcing: a docs-as-code workflow enforces quality at the point of contribution; a task-oriented structure ensures developers can find what they need; and a systematic audit process keeps the content accurate over time. Taken together, they form the foundation of a documentation practice that scales with Anthropic's growth.
 
