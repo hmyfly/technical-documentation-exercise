@@ -46,6 +46,7 @@ If a guide includes working code, it MUST be bundled as a downloadable package d
 ## Content-Type Template: How-to Guide
 
 ---
+`
 title: How to [verb phrase — specific task]
 description: [One sentence outcome: what the reader will accomplish, 20–200 characters]
 version: 1.0.0
@@ -54,6 +55,7 @@ package_language: python  # or typescript, bash, etc.
 tested_against:
   - claude-opus-4-5
   - claude-3.5-sonnet
+`
 ---
 
 ### Authoring <PRIMITIVE_NAME>
@@ -62,10 +64,10 @@ tested_against:
 
 | Task Scaffolding Dimension | Specification Contract |
 | :--- | :--- |
-| **Target Audience** | e.g., Integration Engineers & Enterprise Platform Builders |
-| **Estimated TTHW (Time-to-Hello-World)** | explicitly in minutes, e.g., 10 Minutes |
-| **Prerequisites** | workspace tiers, auth scopes, tooling |
-| **Tested Against** | e.g., Claude 3.5 Sonnet / Claude 3.7 |
+| Target Audience | e.g., Integration Engineers & Enterprise Platform Builders |
+| Estimated TTHW (Time-to-Hello-World) | explicitly in minutes, e.g., 10 Minutes |
+| Prerequisites | workspace tiers, auth scopes, tooling |
+| Tested Against | e.g., Claude 3.5 Sonnet / Claude 3.7 |
 
 ---
 
