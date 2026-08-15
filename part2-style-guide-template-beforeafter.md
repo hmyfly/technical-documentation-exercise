@@ -98,7 +98,7 @@ cd <PRIMITIVE_SLUG>-template
 Open SKILL.md and customize the predefined YAML frontmatter and prompt directives. Replace all template placeholders (<SKILL_IDENTIFIER>, <COMPANY_NAME>) with your domain values.
 #### Step 3: Validate Manifest Schema Locally
 ```Python
-python -m claude_docs.evals.validate_skill --path ./SKILL.md
+python test_manifest.py
 ```
 #### Step 4: Deploy to Target Surface
 Upload the validated package directory to your workspace settings panel or commit to your project repository.
