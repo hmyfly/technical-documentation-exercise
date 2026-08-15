@@ -5,7 +5,7 @@
 
 ---
 
-## Executive Summary
+### Executive Summary
 
 The core failure across [claude.com/docs](https://claude.com/docs) is treating documentation as a static repository of descriptive text rather than an engineered interface for successful task completion.
 In an agent-native ecosystem, documentation has two first-class consumers: human engineers and autonomous AI agents (ingesting via llms.txt). When documentation merely describes features instead of validating executable contracts, both humans and agents fail at runtime due to unvalidated SKILL.md manifests, untracked schema drift, and ambiguous execution boundaries across surfaces (Claude.ai, Cowork, M365, Agent SDK).
