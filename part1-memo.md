@@ -43,16 +43,16 @@ Dual-Consumer Execution Standard: Every operational guide must open with an upfr
 
 ### Quantitative Telemetry & Observability
 
-**Problem:** Reference documentation organized by API structure (e.g., "The Messages endpoint accepts these parameters") is necessary but not sufficient. Developers commonly arrive at docs with a task in mind ("How do I stream a response?", "How do I pass an image?") and need a path that doesn't require them to read the entire reference to answer a specific question.
+Documentation effectiveness is measured by task completion velocity and schema integrity across data warehouse telemetry and automated CI logs:
 
 **Recommendation:** Introduce a layered documentation structure:
 
-| Layer | Purpose | Example |
+| Core Metric | SLA Target | Diagnostic Signal & Calculation |
 |---|---|---|
-| **Quickstart** | Get to a working request in < 5 minutes | Send your first message |
-| **How-to guides** | Task-oriented walkthroughs | How to stream responses / How to use tool use |
-| **Reference** | Complete parameter-level detail | Messages API reference |
-| **Concepts** | Mental models and explanations | How context windows work |
+| Doc-to-Run Latency | < 45s | Time delta between page load and initial code-copy or package download event |
+| Task Completion Rate | > 85% | Ratio of page visits that lead to a successful local CLI manifest validation ping |
+| Schema Pass Rate | > 95% | Ratio of valid Skill manifests vs. client parse rejections in app telemetry |
+| Snippet Execution Drift (SED) | 0 build errors | Nightly headless CI job executing doc snippets and MWE packages against the Claude API |
 
 This is the Diátaxis framework, widely adopted by API documentation teams (Stripe, Twilio, Kubernetes). It separates *learning* content from *doing* content from *understanding* content—matching what developers actually need at each stage.
 
