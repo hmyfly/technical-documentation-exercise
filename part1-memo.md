@@ -12,15 +12,14 @@ In an agent-native ecosystem, documentation has two first-class consumers: human
 
 ---
 
-## Background
+### Prioritized Audit Findings
 
-Developer documentation is often the first (and sometimes only) interaction a developer has with a product. For a company like Anthropic, whose API is both technically complex and commercially critical, documentation quality directly affects:
-
-- **Time-to-first-successful-call** — how quickly a new developer can run a working request
-- **Error rate** — how often developers encounter confusing or ambiguous guidance
-- **Trust** — how confident developers feel that the documentation reflects actual system behavior
-
-Currently, the Anthropic documentation covers the essential reference material well, but there are opportunities to strengthen coherence, task-orientation, and coverage of edge cases.
+- P0 — Unvalidated Markdown Contracts (SKILL.md) Across Dual Audiences:
+Guides present SKILL.md files as informal text samples without machine-enforced JSON/YAML schemas or build-time AST validation in CI. This causes silent runtime failures for developers and non-deterministic parameter hallucinations for autonomous agents ingesting llms.txt.
+- P1 — Omission of Upfront Execution Contracts & Scaffolding:
+Pages lack an upfront task-completion contract: explicit outcome promise, audience tiering, estimated Time-to-Hello-World (TTHW), and runtime preconditions (workspace tiers, tool permissions like bash, OAuth scopes).
+- P2 — Fragmented Snippets vs. Atomic Task-Execution Packages:
+Guides force manual file assembly from isolated snippets instead of providing a downloadable, CI-tested Minimal Working Example (MWE) bundle (e.g., cloneable repository with automated schema assertions).
 
 ---
 
