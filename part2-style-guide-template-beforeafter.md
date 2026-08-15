@@ -26,12 +26,12 @@ Every operational guide MUST lead with a standardized cognitive contract block:
 * Scaffolding Metadata Table: A 2-column table specifying:
   1. `Target Audience` (e.g., Integration Engineers & Enterprise Platform Builders)
   2. `Estimated TTHW (Time-to-Hello-World)` (explicitly in minutes, e.g., 10 Minutes)
-  3. `Required Preconditions` (workspace tiers, auth scopes, tooling)
-  4. `Tested Runtime Baseline` (e.g., Claude 3.5 Sonnet / Claude 3.7)
+  3. `Prerequisites` (workspace tiers, auth scopes, tooling)
+  4. `Tested Against` (e.g., Claude 3.5 Sonnet / Claude 3.7)
 
 #### 3. Atomic Package Delivery (Zero Isolated Snippets)
-If a guide includes working code, it MUST be bundled as a downloadable package deployed via a single curl or git clone command. The bundle MUST include:
-- package.json / pyproject.toml (dependencies)
+If a guide includes working code, it MUST be bundled as a downloadable package deployed via a single `curl` or `git clone` command. The bundle MUST include:
+- `package.json` / `pyproject.toml` (dependencies)
 - Executable script(s) matching the guide's steps
 - README with setup and run instructions
 - (Optional) Test script verifying the example works
