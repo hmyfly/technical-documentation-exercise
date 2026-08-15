@@ -70,7 +70,7 @@ tested_against:
 | Tested Against | e.g., Claude 3.5 Sonnet / Claude 3.7 |
 
 ---
-### ⚡ Quickstart: Clone Minimal Working Package
+### Quickstart: Clone Minimal Working Package
 
 ```bash
 # Clone the canonical minimal working package
