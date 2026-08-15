@@ -112,45 +112,106 @@ tested_against:
 
 ### Before
 
-The following is an example of a documentation page that violates several style guide rules. This is based on typical "Packaging Your Skill" guidance:
+The following is the current "Creating custom skills" page from https://claude.com/docs/skills/how-to. It violates several style guide rules:
 
 ---
 
-**Packaging Your Skill**
+**Creating custom skills**
 
-To package your own skill for Claude, follow these steps. Your skill is a folder. At minimum, it must contain a `SKILL.md` file. The folder name must match the `name` field in your `SKILL.md`.
+> Learn how to create, structure, and test your own custom skills
 
-First, create the SKILL.md file. This file begins with YAML frontmatter:
+Custom skills extend Claude with specialized knowledge and workflows. This guide explains how to create, structure, and test your own skills.
 
-```
-name: brand-guidelines
-description: Apply Acme Corp brand guidelines to presentations and documents, including official colors, fonts, and logo usage.
-```
+Skills can range from simple instruction sets to multi-file packages with executable code. Effective skills:
 
-The `name` field should be lowercase, numbers, and hyphens only. It must be ≤64 chars and match the directory name. The `description` field explains what the skill does, up to 200 chars (Claude.ai limit).
+* Solve a specific, repeatable task
+* Have clear instructions Claude can follow
+* Include examples when helpful
+* Define when they should be used
+* Focus on one workflow rather than trying to do everything
 
-After the frontmatter, add markdown instructions for Claude:
-- Step-by-step guides
-- Input/output examples
-- Templates or formats
-- Edge cases to consider
+<Note>
+  Skills follow the [Agent Skills specification](https://agentskills.io/specification) — see the specification for more in-depth information.
+</Note>
 
-You can include optional subfolders like `scripts/` (for code), `references/` (for docs), and `assets/` (for templates, images, data). Keep your `SKILL.md` file manageable—it should be ≤500 lines; move extras to reference files. Make instructions clear and focused on one workflow.
+## Directory structure
 
-Here's an example directory structure:
+A skill is a directory containing at minimum a `SKILL.md` file:
 
 ```
 brand-guidelines/
 ├── SKILL.md
-├── scripts/
-│   └── validate_branding.py
-├── references/
-│   └── color_palette.json
-└── assets/
-    └── logo.png
+├── scripts/        # Optional: executable code
+├── references/     # Optional: additional documentation
+└── assets/         # Optional: templates, images, data files
 ```
 
-By following this structure and guidelines, you'll ensure your skill is packaged correctly and ready for use with Claude.
+The directory name must match the `name` field in your `SKILL.md`.
+
+## Creating a `SKILL.md` file
+
+The `SKILL.md` file must start with YAML frontmatter containing required metadata, followed by markdown instructions.
+
+### Required fields
+
+```markdown
+---
+name: brand-guidelines
+description: Apply Acme Corp brand guidelines to presentations and documents, including official colors, fonts, and logo usage.
+---
+```
+
+**name**: Lowercase letters, numbers, and hyphens only. Maximum 64 characters. Must match the directory name.
+
+**description**: Explains what the skill does and when to use it. Claude uses this to determine when to invoke your skill.
+
+<Warning>
+  Claude.ai limits descriptions to **200 characters**.
+</Warning>
+
+### Markdown body
+
+After the frontmatter, write markdown instructions for Claude. Include:
+
+* Step-by-step procedures
+* Examples of inputs and outputs
+* Templates or formatting requirements
+* Edge cases to handle
+
+Keep your main `SKILL.md` under 500 lines. Move detailed reference material to separate files.
+
+## Adding resources
+
+For content too detailed for `SKILL.md`, add files to your skill directory:
+
+* **`references/`**: Additional documentation Claude can read when needed
+* **`assets/`**: Templates, images, lookup tables, schemas
+* **`scripts/`**: Executable code
+
+Reference these files in `SKILL.md` so Claude knows when to load them. Keep files focused—smaller files mean less context usage.
+
+## Packaging your skill
+
+To upload a skill to Claude:
+
+1. Ensure the directory name matches your skill's `name` field
+2. Create a ZIP file containing the skill directory
+
+## Testing your skill
+
+### Before uploading
+
+1. Review `SKILL.md` for clarity
+2. Verify the description accurately reflects when Claude should use the skill
+3. Check that all referenced files exist
+4. Validate using `skills-ref validate ./my-skill`
+
+### After uploading
+
+1. Enable the skill in **Customize > Skills**
+2. Try prompts that should trigger it
+3. Review Claude's thinking
+4. Iterate on the description
 
 ---
 
@@ -162,37 +223,37 @@ The revised page below applies the style guide and template:
 
 ```markdown
 ---
-title: How to package your skill
-description: Create a skill folder structure and SKILL.md manifest that Claude can recognize and load, ready for testing and deployment.
+title: How to create a custom skill
+description: Build and structure a custom skill with SKILL.md manifest, optional scripts and references, then test and validate it locally before uploading.
 version: 1.0.0
-package_name: tutorial-packaging-skill
+package_name: tutorial-create-custom-skill
 package_language: bash
 tested_against:
   - claude-opus-4-5
   - claude-3.5-sonnet
 ---
 
-# How to package your skill
+# How to create a custom skill
 
-Create a structured skill directory with a valid `SKILL.md` manifest and optional supporting files. By the end of this guide, you'll have a complete, validated skill package ready to deploy.
+Custom skills extend Claude with specialized knowledge and workflows. This guide walks you through creating a focused, reusable skill that Claude can discover and invoke automatically.
 
-> **Outcome Promise:** By the end of this guide, you will create a skill package, structure required and optional directories, configure your SKILL.md manifest, and validate it locally.
+> **Outcome Promise:** By the end of this guide, you will create a skill directory, structure a valid SKILL.md manifest, add optional supporting files, validate locally, and package it for upload.
 
 | | |
 |---|---|
-| **Target Audience** | SDK users building custom skills for Claude |
-| **Time-to-Hello-World** | 15 minutes |
-| **Prerequisites** | A text editor, basic familiarity with YAML and directory structure |
+| **Target Audience** | Developers building custom Claude skills for Claude.ai or Code |
+| **Time-to-Hello-World** | 20 minutes |
+| **Prerequisites** | A text editor; basic understanding of YAML syntax; familiarity with directory structures |
 | **Tested Against** | Claude 3.5 Sonnet, Claude Opus 4.5 |
-| **Get Started** | `git clone https://github.com/anthropic-ai/docs-examples/tree/main/tutorial-packaging-skill` |
+| **Get Started** | `git clone https://github.com/anthropic-ai/docs-examples/tree/main/tutorial-create-custom-skill` |
 
 ## Prerequisites
 
 - A text editor (VS Code, nano, vim, etc.)
-- Basic understanding of YAML syntax
-- An Anthropic API key (for testing your skill later)
+- Basic understanding of YAML and Markdown syntax
+- An Anthropic API key (for testing skills later)
 
-## Step 1: Create the skill directory
+## Step 1: Create your skill directory
 
 Initialize a new directory with your skill name. Use lowercase letters, numbers, and hyphens only—no spaces or uppercase characters.
 
@@ -205,42 +266,58 @@ This directory will contain all your skill files. The folder name must match the
 
 ## Step 2: Create the SKILL.md manifest
 
-Create a `SKILL.md` file in the root of your skill directory. Begin with YAML frontmatter that defines your skill's identity:
+Create a `SKILL.md` file in the root of your skill directory. Begin with YAML frontmatter containing required metadata, followed by markdown instructions for Claude:
 
 ```yaml
 ---
 name: my-custom-skill
-description: Apply company brand guidelines to documents, including colors, fonts, and logo usage.
-version: 1.0.0
+description: Apply company brand guidelines to presentations and documents, including colors, fonts, and logo usage.
 ---
 
-# Brand Guidelines Skill
+# Brand Guidelines
 
-When the user asks you to apply brand guidelines, follow these rules:
+Apply these standards when creating presentations, documents, or marketing materials.
 
-## Color Palette
+## Brand colors
 
-- Primary: #0052CC (Blue)
-- Secondary: #F0F0F0 (Light Gray)
-- Accent: #FF6B6B (Red)
+- Primary: #FF6B35 (Coral)
+- Secondary: #004E89 (Navy Blue)
+- Accent: #F7B801 (Gold)
+- Neutral: #2E2E2E (Charcoal)
 
 ## Typography
 
-- Headings: Sans-serif, 18pt minimum
-- Body text: Sans-serif, 12pt minimum
-- Always use sentence case, not Title Case
+- Headers: Montserrat Bold
+- Body text: Open Sans Regular
+- Size guidelines: H1 32pt, H2 24pt, Body 11pt
 
-## Logo Usage
+## Logo usage
 
-- Minimum size: 100x100 pixels
-- Always maintain aspect ratio
-- Never rotate or distort
+- Use full-color logo on light backgrounds
+- Use white logo on dark backgrounds
+- Maintain minimum 0.5 inches spacing around logo
+
+## When to apply
+
+Apply these guidelines when creating:
+- PowerPoint presentations
+- Word documents for external sharing
+- Marketing materials
+- Client reports
+
+See the [assets/](assets/) folder for logo files and fonts.
 ```
 
-**Manifest field requirements:**
+**Required frontmatter fields:**
 - `name`: Lowercase, numbers, hyphens only. Max 64 characters. Must match directory name.
-- `description`: Single sentence explaining what the skill does (20–200 characters).
-- `version`: Semantic versioning (`MAJOR.MINOR.PATCH`). Start with `1.0.0`.
+- `description`: Single sentence explaining what the skill does and when to use it (max 200 characters).
+
+**Markdown body requirements:**
+- Include step-by-step procedures
+- Provide examples of inputs and outputs
+- Define templates or formatting requirements
+- List edge cases to handle
+- Keep under 500 lines (move detailed content to references/)
 
 ## Step 3: Add optional supporting files
 
@@ -254,20 +331,21 @@ Your skill directory structure now looks like:
 
 ```text
 my-custom-skill/
-├── SKILL.md                 # [REQUIRED] Manifest and instructions
-├── scripts/                 # [OPTIONAL] Helper scripts or code
+├── SKILL.md                 # [REQUIRED] Manifest and Claude instructions
+├── scripts/                 # [OPTIONAL] Executable code (Python, JS, Bash)
 │   └── validate.py
-├── references/              # [OPTIONAL] Reference data and docs
+├── references/              # [OPTIONAL] Detailed reference docs
 │   └── color_palette.json
-└── assets/                  # [OPTIONAL] Images, templates, data files
+└── assets/                  # [OPTIONAL] Templates, images, lookup tables
     └── logo.png
 ```
 
-- `scripts/` — Python, bash, or other code supporting your skill.
-- `references/` — JSON, YAML, or markdown files with detailed information.
-- `assets/` — Images, templates, PDFs, or other binary files.
+**Guidance for each folder:**
+- `scripts/` — Executable code Claude can run. Declare dependencies in frontmatter with `dependencies: python>=3.8, pandas>=1.5.0`.
+- `references/` — JSON, YAML, or markdown files with detailed information Claude reads when needed. Keep files focused to minimize context usage.
+- `assets/` — Images, templates, PDFs, or lookup tables your skill may reference.
 
-## Step 4: Validate your manifest
+## Step 4: Validate your skill locally
 
 Copy the `test_manifest.py` file into your skill root directory and run it:
 
@@ -284,22 +362,71 @@ Expected output:
 
 If validation fails, review the error messages and correct your `SKILL.md` frontmatter.
 
+Alternatively, use the official validation tool:
+
+```bash
+skills-ref validate ./my-custom-skill
+```
+
+## Step 5: Package and upload your skill
+
+Prepare your skill for upload to Claude:
+
+```bash
+# Ensure directory name matches your skill's name field
+# Create a ZIP file with correct structure:
+my-custom-skill.zip
+└── my-custom-skill/
+    ├── SKILL.md
+    ├── scripts/
+    ├── references/
+    └── assets/
+```
+
+Then upload via Claude.ai:
+
+1. Go to **Customize > Skills**
+2. Click **Upload skill**
+3. Select your ZIP file
+4. Enable the skill
+
+## Step 6: Test your skill in Claude
+
+After uploading, verify the skill works as expected:
+
+1. **Enable the skill** in **Customize > Skills**
+2. **Trigger it** with test prompts that should activate the skill
+3. **Review Claude's thinking** (visible in Claude Code) to confirm the skill loaded
+4. **Iterate on the description** if Claude isn't using it when expected
+
+Refine your skill's `description` field to help Claude identify when to invoke it. Be specific about the task and include keywords that match user queries.
+
 ## What you built
 
-You now have a complete, validated skill package with:
+You now have a complete, validated, uploadable skill with:
 
-- A structured directory following Anthropic conventions
-- A `SKILL.md` manifest with required frontmatter and Claude instructions
-- Optional subdirectories for scripts, references, and assets
-- Local validation ensuring your manifest is correct before publishing
+- A structured directory following the Agent Skills specification
+- A `SKILL.md` manifest with required frontmatter and clear Claude instructions
+- Optional supporting files (scripts, references, assets) organized by purpose
+- Local validation ensuring your manifest conforms to schema before publishing
+- Clear instructions for when and how Claude should use the skill
 
-Your skill is ready to test with Claude or commit to a repository.
+Your skill is ready to enable in Claude.ai or Claude Code.
+
+## Best practices
+
+- **Keep it focused**: Create separate skills for different workflows rather than one large skill
+- **Write clear descriptions**: Be specific about when the skill applies; include keywords Claude can match
+- **Start simple**: Begin with markdown instructions before adding scripts or complex logic
+- **Use examples**: Include example inputs/outputs to help Claude understand success
+- **Test incrementally**: Validate after each significant change
+- **Leverage composability**: Claude can use multiple focused skills together automatically
 
 ## Next steps
 
-- [How to test your skill with Claude](./how-to-test-your-skill.md)
-- [SKILL.md schema reference](../reference/skill-schema.md)
-- [Understanding skill scope and limitations](../concepts/skill-scope.md)
+- [Agent Skills specification](https://agentskills.io/specification)
+- [Skills in Claude Code](https://code.claude.com/docs/en/skills)
+- [Example skills repository](https://github.com/anthropics/skills/tree/main/skills)
 ```
 
 ---
@@ -308,11 +435,14 @@ Your skill is ready to test with Claude or commit to a repository.
 
 | Issue in "Before" | Fix in "After" | Style Guide Rule |
 |---|---|---|
-| Wall of prose; no clear task breakdown | Structured into 4 actionable steps with H2 headings | Imperative action verbs; Content discipline |
-| Vague guidance: "add markdown instructions" | Concrete SKILL.md example showing frontmatter and actual branding rules | Atomic package delivery; Code examples |
-| Directory structure shown as afterthought | Package anatomy presented early in Step 3 with purpose for each folder | Task-completion scaffolding |
-| No validation mentioned | Step 4 provides `test_manifest.py` script for automatic validation | Zero isolated snippets |
-| Filler language: "you'll ensure your skill is packaged correctly" | Specific outcome: "Your skill is ready to test with Claude or commit" | Direct, action-oriented voice |
-| No frontmatter or related links | Frontmatter block at top; scaffolding table with time estimate; "Next steps" links | Outcome promise; Cognitive contract |
-| Optional folders mentioned without rationale | Each folder explained with concrete examples (e.g., "JSON files for data") | Content clarity and completeness |
-| No entry point for beginners | "Get Started" shows `git clone` command; package is downloadable and customizable | Atomic package delivery |
+| No frontmatter metadata or entry point | Frontmatter with title, description, version, package_name, tested_against, git clone link at top | Task-completion scaffolding; Atomic package delivery |
+| Vague introduction: "Learn how to..." | Specific outcome promise: "you will create a skill directory, structure SKILL.md, add files, validate, and package" | Outcome promise; Imperative action verbs |
+| No scaffolding metadata table | Complete table with Target Audience, Time-to-Hello-World (20 min), Prerequisites, Tested Against, Get Started | Cognitive contract; Upfront clarity |
+| Directory structure shown first, no context | Structure shown in Step 3 after creating SKILL.md, with purpose for each folder | Content discipline; Task flow |
+| "Creating a SKILL.md file" section is vague | Step 2 shows complete, concrete SKILL.md example with frontmatter and markdown body | Atomic package delivery; Code examples |
+| "Packaging your skill" buried at end | Step 5 integrates packaging into main workflow with clear ZIP structure and upload instructions | Workflow integration |
+| "Testing" split into Before/After uploading, scattered | Step 6 integrates testing into workflow after upload with specific validation checkpoints | Imperative action verbs; Clear sequencing |
+| No local validation tool in workflow | Step 4 provides `test_manifest.py` script with expected output and error handling | Zero isolated snippets; CI-gated quality |
+| Filler language: "can range from simple to complex" | Specific, actionable language throughout: "Create," "Configure," "Validate," "Test," "Package" | Direct, action-oriented voice |
+| No clear "best practices" connection to structure | Best practices section appears at end with concrete rationale for skill design decisions | Content completeness |
+
