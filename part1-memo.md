@@ -14,11 +14,11 @@ In an agent-native ecosystem, documentation has two first-class consumers: human
 
 ### Prioritized Audit Findings
 
-P0 — Unvalidated Markdown Contracts (SKILL.md) Across Dual Audiences:
+- P0 — Unvalidated Markdown Contracts (SKILL.md) Across Dual Audiences:
 Guides present SKILL.md files as informal text samples without machine-enforced JSON/YAML schemas or build-time AST validation in CI. This causes silent runtime failures for developers and non-deterministic parameter hallucinations for autonomous agents ingesting llms.txt.
-P1 — Omission of Upfront Execution Contracts & Scaffolding:
+- P1 — Omission of Upfront Execution Contracts & Scaffolding:
 Pages lack an upfront task-completion contract: explicit outcome promise, audience tiering, estimated Time-to-Hello-World (TTHW), and runtime preconditions (workspace tiers, tool permissions like bash, OAuth scopes).
-P2 — Fragmented Snippets vs. Atomic Task-Execution Packages:
+- P2 — Fragmented Snippets vs. Atomic Task-Execution Packages:
 Guides force manual file assembly from isolated snippets instead of providing a downloadable, CI-tested Minimal Working Example (MWE) bundle (e.g., cloneable repository with automated schema assertions).
 
 ---
