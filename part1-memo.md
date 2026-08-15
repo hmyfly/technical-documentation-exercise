@@ -1,9 +1,7 @@
 # Memo: Improving API Documentation Quality and Developer Experience at Anthropic
 
-**To:** Documentation Team, Developer Relations  
-**From:** Technical Documentation Candidate  
 **Date:** August 2026  
-**Subject:** Recommendations for Scaling Developer-Facing API Documentation
+**Subject:** Systems Audit & Architecture: Upgrading Skills into an Executable Docs Pipeline
 
 ---
 
