@@ -4,6 +4,7 @@
 
 ## Executive Summary
 **From "Publishing Information" to "Designing Task Completion"**
+
 The core failure across [claude.com/docs](https://claude.com/docs) is treating documentation as a static repository of descriptive text rather than an engineered interface for successful task completion. Operational guides (how-tos) must commit upfront to specific outcomes, time estimates, and prerequisites—then deliver downloadable, tested packages that developers can run immediately, not isolated code snippets requiring manual assembly.
 
 In an agent-native ecosystem, documentation has two first-class consumers: human engineers and autonomous AI agents (ingesting via llms.txt). When documentation merely describes features instead of enabling immediate, validated action, both audiences fail. This audit identifies three priority gaps and proposes a "docs as code" workflow that treats guides as executable specifications with machine-validated frontmatter, consistent scaffolding, and atomic package delivery.
