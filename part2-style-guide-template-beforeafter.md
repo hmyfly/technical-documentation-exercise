@@ -45,53 +45,27 @@ If a guide includes working code, it MUST be bundled as a downloadable package d
 
 ## Content-Type Template: How-to Guide
 
-```
 ---
 title: How to [verb phrase — specific task]
-description: [One sentence: what the reader will accomplish and what they need to start.]
+description: [One sentence outcome: what the reader will accomplish, 20–200 characters]
+version: 1.0.0
+package_name: tutorial-[slug]
+package_language: python  # or typescript, bash, etc.
+tested_against:
+  - claude-opus-4-5
+  - claude-3.5-sonnet
 ---
 
-# How to [verb phrase]
+### Authoring <PRIMITIVE_NAME>
 
-[One to two sentences: the goal of this guide and its expected outcome. Do not start with "This guide will..."]
+> **Outcome Promise:** By the end of this guide, you will author, validate against schema, locally test, and trigger a custom `<PRIMITIVE_NAME>` across Claude applications.
 
-## Prerequisites
-
-- [Specific requirement 1, e.g., An Anthropic API key]
-- [Specific requirement 2, e.g., Python 3.8+ with the anthropic SDK installed]
-
-## [Step 1: Verb phrase]
-
-[One to two sentences introducing what this step accomplishes and why.]
-
-[Code block if applicable]
-
-[Brief explanation of what happened or what to look for in the output.]
-
-## [Step 2: Verb phrase]
-
-...
-
-## [Step N: Verb phrase]
-
-...
-
-## What you built
-
-[One to two sentences summarizing what the reader has accomplished. Be concrete.]
-
-## Next steps
-
-- [Link to related how-to or concept page]
-- [Link to relevant reference section]
-```
-
-**Template usage notes:**
-
-- Limit how-to guides to a single, completable task. If the guide requires more than six steps, consider splitting it.
-- Every step should be a distinct action. If a step is "understand X," it belongs in a Concepts page, not a how-to.
-- The title must be a verb phrase starting with an infinitive: `How to stream responses`, `How to use tool use`, `How to handle rate limit errors`.
-- Do not include troubleshooting sections inline. Link to a dedicated troubleshooting page if one exists.
+| Task Scaffolding Dimension | Specification Contract |
+| :--- | :--- |
+| **Target Audience** | e.g., Integration Engineers & Enterprise Platform Builders |
+| **Estimated TTHW (Time-to-Hello-World)** | explicitly in minutes, e.g., 10 Minutes |
+| **Prerequisites** | workspace tiers, auth scopes, tooling |
+| **Tested Against** | e.g., Claude 3.5 Sonnet / Claude 3.7 |
 
 ---
 
