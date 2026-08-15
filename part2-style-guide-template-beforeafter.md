@@ -89,13 +89,21 @@ cd <PRIMITIVE_SLUG>-template
 └── test_manifest.py     # [REQUIRED] Pre-commit schema assertion test
 ```
 ### Step-by-Step Implementation
-**Unpack Reference Directory:**
+#### Step 1: Unpack Reference Directory
 ```bash
 curl -L [https://claude.com/assets/skills/](https://claude.com/assets/skills/)<PRIMITIVE_SLUG>-template.tar.gz | tar -xz
 cd <PRIMITIVE_SLUG>-template
 ```
+#### Step 2: Configure Manifest Variables
+Open SKILL.md and customize the predefined YAML frontmatter and prompt directives. Replace all template placeholders (<SKILL_IDENTIFIER>, <COMPANY_NAME>) with your domain values.
+#### Step 3: Validate Manifest Schema Locally
+```Python
+python -m claude_docs.evals.validate_skill --path ./SKILL.md
+```
+#### Step 4: Deploy to Target Surface
+Upload the validated package directory to your workspace settings panel or commit to your project repository.
 
-
+---
 
 ## Before/After Page Revision
 
