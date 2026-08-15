@@ -76,7 +76,7 @@ tested_against:
 # Clone the canonical minimal working package
 curl -L [https://claude.com/assets/skills/](https://claude.com/assets/skills/)<PRIMITIVE_SLUG>-template.tar.gz | tar -xz
 cd <PRIMITIVE_SLUG>-template
-
+```
 ---
 
 ## Before/After Page Revision
