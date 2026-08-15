@@ -70,6 +70,14 @@ tested_against:
 | Tested Against | e.g., Claude 3.5 Sonnet / Claude 3.7 |
 
 ---
+### ⚡ Quickstart: Clone Minimal Working Package
+
+```bash
+# Clone the canonical minimal working package
+curl -L [https://claude.com/assets/skills/](https://claude.com/assets/skills/)<PRIMITIVE_SLUG>-template.tar.gz | tar -xz
+cd <PRIMITIVE_SLUG>-template
+
+---
 
 ## Before/After Page Revision
 
