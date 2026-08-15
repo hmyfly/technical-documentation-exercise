@@ -30,8 +30,11 @@ Every operational guide MUST lead with a standardized cognitive contract block:
   4. `Tested Runtime Baseline` (e.g., Claude 3.5 Sonnet / Claude 3.7)
 
 #### 3. Atomic Package Delivery (Zero Isolated Snippets)
-* Operational guides MUST provide a single-line `curl` or `git clone` command within the first 150 words to deploy a complete, verified directory bundle (`SKILL.md`, runtime scripts, reference tokens, test harness).
-* Disconnected snippets that require manual file creation and indentation guesswork are strictly rejected by CI validation.
+If a guide includes working code, it MUST be bundled as a downloadable package deployed via a single curl or git clone command. The bundle MUST include:
+- package.json / pyproject.toml (dependencies)
+- Executable script(s) matching the guide's steps
+- README with setup and run instructions
+- (Optional) Test script verifying the example works
 
 #### 4. Syntactic & Code Block Conformance Rules
 * Fenced Code Tagging: Every code block MUST declare an explicit language identifier (`yaml`, `json`, `bash`, `python`, or `text`). Un-tagged code fences fail pre-merge linting.
