@@ -113,24 +113,6 @@ The following is an example of a documentation page that violates several style 
 
 ---
 
-**Working with the Anthropic API**
-
-The Anthropic API is a great way to utilize our AI models. In order to get started, you will first need to make sure that you have obtained an API key. Once you have done this, you can begin to make API calls.
-
-Making a request is very simple. All you have to do is send some JSON data to our endpoint. The AI will then process your message and generate a response for you that you can then use in your application.
-
-Here is an example:
-
-```
-import anthropic
-client = anthropic.Anthropic(api_key="YOUR_KEY")
-response = client.messages.create(model="claude-opus-4-5", max_tokens=100, messages=[{"role": "user", "content": "Hi"}])
-print(response)
-```
-
-Please note that there are various parameters you can set. The max_tokens parameter can be utilized to control the length of the AI's output. The temperature setting can also be adjusted. Higher temperatures will cause more creative or random outputs from the AI system.
-
-You might also want to handle errors. If something goes wrong, the API could return an error. You should probably catch these.
 
 ---
 
@@ -140,73 +122,6 @@ The revised page below applies the style guide:
 
 ---
 
-**Send your first message**
-
-This guide shows you how to send a message to the Claude API and read the response. You will need a valid API key and the `anthropic` Python SDK installed.
-
-## Prerequisites
-
-- An [Anthropic API key](https://console.anthropic.com/)
-- Python 3.8 or later
-- The `anthropic` SDK: `pip install anthropic`
-
-## Send a message
-
-Set your API key as an environment variable, then send a message to the Messages endpoint:
-
-```python
-import anthropic
-
-client = anthropic.Anthropic()  # Reads ANTHROPIC_API_KEY from environment
-
-message = client.messages.create(
-    model="claude-opus-4-5",
-    max_tokens=1024,
-    messages=[
-        {"role": "user", "content": "Hello, Claude"}
-    ]
-)
-
-print(message.content)
-```
-
-The API returns a `Message` object. The `content` field contains a list of content blocks. For a plain text response, `message.content[0].text` contains the text string.
-
-## Control output length
-
-Use `max_tokens` to set an upper bound on the number of tokens the model generates. The model may stop before this limit if it reaches a natural endpoint.
-
-```python
-message = client.messages.create(
-    model="claude-opus-4-5",
-    max_tokens=256,       # Stop after at most 256 tokens
-    messages=[...]
-)
-```
-
-> **Note:** Setting `max_tokens` too low may cause the response to be cut off mid-sentence. Start with 1024 for most tasks and adjust based on your use case.
-
-## Handle errors
-
-Wrap API calls in a `try/except` block to handle rate limit errors and API errors gracefully:
-
-```python
-import anthropic
-
-client = anthropic.Anthropic()
-
-try:
-    message = client.messages.create(
-        model="claude-opus-4-5",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": "Hello, Claude"}]
-    )
-    print(message.content)
-except anthropic.RateLimitError as e:
-    print(f"Rate limit reached: {e}")
-except anthropic.APIError as e:
-    print(f"API error: {e}")
-```
 
 ## Next steps
 
