@@ -52,5 +52,3 @@ Documentation effectiveness is measured by task completion velocity and schema i
 | Schema Pass Rate | > 95% | Ratio of valid Skill manifests vs. client parse rejections in app telemetry |
 | Snippet Execution Drift (SED) | 0 build errors | Nightly headless CI job executing doc snippets and MWE packages against the Claude API |
 
----
-
