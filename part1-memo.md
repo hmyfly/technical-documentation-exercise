@@ -27,6 +27,7 @@ Guides force manual file assembly from isolated snippets instead of providing a 
 
 All fragmented Skill routes consolidate into an execution-first specification hierarchy:
 
+```text
 [claude.com/docs/skills/](https://claude.com/docs/skills/)
 ├── index.md                      <-- Execution Lifecycle & Cross-Surface Compatibility Matrix
 ├── authoring.md                  <-- Task-Completion Contract, MWE Quickstart & CLI Verification
