@@ -1,6 +1,5 @@
-#Part 1: Systems Audit & Architecture: Upgrading Skills into an Executable Docs Pipeline
+# Part 1: Systems Audit & Architecture - Upgrading Skills into an Executable Docs Pipeline
 
-**Date:** August 2026  
 **Subject:** From "Publishing Information" to "Designing Task Completion"
 
 ---
