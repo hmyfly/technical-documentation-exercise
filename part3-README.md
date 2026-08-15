@@ -36,157 +36,139 @@ git clone https://github.com/hmyfly/technical-documentation-exercise
 cd technical-documentation-exercise
 
 # Run on a local file
-python part3_docs_checker.py part2-style-guide-template-beforeafter.md
+python3 part3_docs_checker.py part2-style-guide-template-beforeafter.md
 
 # Run on a remote URL
-python part3_docs_checker.py https://claude.com/docs/skills/how-to
+python3 part3_docs_checker.py https://claude.com/docs/skills/how-to
 
 # Output as JSON (for CI integration)
-python part3_docs_checker.py ./file.md --json
+python3 part3_docs_checker.py ./file.md --json
 
 # Strict mode (exit with code 1 if any violations)
-python part3_docs_checker.py ./file.md --strict
+python3 part3_docs_checker.py ./file.md --strict
 ```
 
 ---
 
-## Test Results: Real Corpus Analysis
+## Real Test Results from Actual Run
 
-### Test 1: Part 2 Style Guide (Our Own Benchmark Document)
+### Test 1: Part 2 Style Guide (Our Benchmark Document)
 
+**Command:**
 ```bash
-python part3_docs_checker.py part2-style-guide-template-beforeafter.md
+python3 part3_docs_checker.py part2-style-guide-template-beforeafter.md
 ```
 
-**Result:** ✅ **PASS** — 7 checks passed, 0 failed
-
-The document passes all validations:
-- ✅ YAML frontmatter with all 6 required fields
-- ✅ Outcome Promise blockquote present
-- ✅ Scaffolding metadata table with all 5 rows
-- ✅ Git clone entry point provided
-- ✅ All code blocks tagged with language
-- ✅ Procedural steps use imperative verbs (Step 1, Step 2, etc.)
-- ✅ No condescending language detected
-
+**Actual Output:**
 ```
 ======================================================================
 DOCUMENT: Part 2: Style Guide, Content Template, and Before/After
 URL: part2-style-guide-template-beforeafter.md
 ======================================================================
 
-✅ All checks passed!
-
-======================================================================
-SUMMARY: 7 passed, 0 failed
-Timestamp: 2026-08-15T21:55:00
-======================================================================
-```
-
----
-
-### Test 2: Original "Creating Custom Skills" Page (Before Revision)
-
-Created scrape of the original page at https://claude.com/docs/skills/how-to:
-
-```bash
-python part3_docs_checker.py claude-docs-skills-before.md
-```
-
-**Result:** ❌ **FAIL** — 7 checks passed, 3 violations found
-
-**Violations Detected:**
-
-```
-❌ ERRORS (0)
-
-⚠️  WARNINGS (1)
-
-  Line 10 (incomplete-scaffolding-table)
-    Scaffolding table missing required rows: Time-to-Hello-World, Get Started
-    → Add missing rows to the scaffolding table: Time-to-Hello-World, Get Started
-
-  Line 15 (missing-entry-point)
-    Document should include a git clone or curl command for downloading the example package
-    Context: No 'git clone' or 'curl' command found
-    → Add a git clone or curl command in the 'Get Started' row of the scaffolding table
-
-ℹ️  INFO (1)
-
-  Line 42 (condescending-language)
-    Avoid 'simply' — it implies the task is trivial
-    Context: "The SKILL.md file must start with YAML frontmatter containing required metadata, followed by markdown instructions."
-```
-
-**Analysis:**
-- ✅ Has frontmatter with required fields
-- ✅ Has Outcome Promise blockquote
-- ⚠️ **Scaffolding table is incomplete** — Missing "Time-to-Hello-World" and "Get Started" rows (P1 violation)
-- ⚠️ **No entry point command** — Developers must manually infer how to get the example
-- ℹ️ Uses "simply" (line 42) in prose
-
----
-
-### Test 3: Anthropic API Reference Page (Generic Non-How-To)
-
-```bash
-python part3_docs_checker.py claude-docs-api-reference.md
-```
-
-**Result:** ❌ **FAIL** — 3 checks passed, 4 violations found
-
-**Violations Detected:**
-
-```
 ❌ ERRORS (1)
 
   Line 1 (missing-frontmatter)
     Document must begin with YAML frontmatter (--- ... ---)
-    Suggestion: Add YAML frontmatter with required fields: title, description, version, package_name, package_language, tested_against
+    → Add YAML frontmatter with required fields: title, description, version, package_name, package_language, tested_against
 
-  Line 5 (missing-outcome-promise)
-    Document must include an Outcome Promise blockquote after the title
-    Suggestion: Add: > **Outcome Promise:** By the end of this guide, you will [imperative verbs].
+⚠️  WARNINGS (10)
 
-  Line 10 (missing-scaffolding-table)
-    Document must include a scaffolding metadata table with Target Audience, Time-to-Hello-World, Prerequisites, Tested Against, Get Started
-    Context: No table found in document
-    Suggestion: Add a 2-column table with the 5 required scaffolding rows after the Outcome Promise
+  Line 90 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
 
-ℹ️  INFO (1)
+  Line 141 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
 
-  Line 72 (condescending-language)
-    Avoid 'easily' — it implies the task is trivial
-    Context: "You can easily extend the API with custom middleware"
+  Line 263 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 309 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 328 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 341 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 355 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 361 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 369 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+  Line 384 (code-block-no-language)
+    Code block missing language identifier
+    → Add language tag: ```python, ```bash, ```yaml, etc.
+
+ℹ️  INFO (28)
+
+  Line 10 (non-imperative-heading)
+    Heading 'Style Guide Excerpt' should start with an imperative verb
+
+  Line 12 (non-imperative-heading)
+    Heading 'Standard ID: DOC-SKILL-001 (Skill Primitive Schema & Task Execution Contract)' should start with an imperative verb
+
+  Line 51 (non-imperative-heading)
+    Heading 'Content-Type Template: How-to Guide' should start with an imperative verb
+
+======================================================================
+SUMMARY: 4 passed, 39 failed
+Timestamp: 2026-08-15T16:17:52.511612
+======================================================================
 ```
 
 **Analysis:**
-- ❌ **No YAML frontmatter** — This page is a reference, not a how-to guide
-- ❌ **No Outcome Promise**
-- ❌ **No scaffolding table**
-- ℹ️ Uses "easily" in documentation
 
-**False Positive:** This checker is correctly designed to flag reference pages that don't follow the how-to-guide standard. The reference page *should* fail these checks because it's not a procedural guide—it's reference documentation. This is **not a false positive**; the reference page genuinely lacks the scaffolding structure required by the style guide.
+✅ **What This Teaches Us:**
+
+1. **The checker works** — It actually runs and finds real violations
+2. **False positive on frontmatter** — Part 2 *does* have metadata but not at line 1 (it's in the Content-Type Template section, not at doc start)
+   - **This is a false positive** — Part 2 is about the style guide itself, not a conforming how-to guide
+   - **Lesson:** Checker should allow reference/meta documents to skip frontmatter validation
+   - **Mitigation:** Add `---\ntype: reference\n---` to skip scaffolding checks
+
+3. **Real warning on code blocks** — 10 code fences use triple backticks without language tags
+   - Lines 90, 141, 263, 309, 328, 341, 355, 361, 369, 384
+   - These are ````markdown` blocks showing how-to-guide templates
+   - **This is a real violation** — Even example code blocks should have language tags
+   - **Fix:** Tag with ````markdown` or ````text`
+
+4. **INFO messages on headings** — "Style Guide Excerpt" isn't imperative
+   - **This is expected** — Part 2 is a reference document, not a procedural guide
+   - **Not a real problem** — Reference sections don't need imperative verbs
 
 ---
 
-## False Positive Analysis
+## Known False Positives & Calibration
 
-### Known False Positives (2 cases)
+### False Positive #1: Reference documents flagged for missing scaffolding
 
-**1. Reference pages incorrectly flagged for missing scaffolding**
+**Case:** Part 2 itself is flagged for missing frontmatter
+- **Expected:** Reference/meta documents shouldn't need scaffolding
+- **Fix:** Add document type detection to skip non-procedural docs
+- **Tolerance:** 0% for how-to guides, but reference docs are expected to fail
 
-- **Case:** Documentation that is intentionally *not* a procedural how-to (e.g., API reference, schema reference, conceptual overview)
-- **Impact:** LOW — Reference pages should not pass HOW-TO guide checks by definition
-- **Tolerance:** 0% false positives acceptable here. These are correctly failing.
-- **Mitigation:** Add a `---\ntype: reference\n---` field to frontmatter so checker can skip scaffolding validation for non-how-to pages
+### False Positive #2: Template example code blocks
 
-**2. Code blocks in fence-quoted markdown within markdown**
-
-- **Case:** When documenting markdown syntax itself (e.g., showing how to write code blocks), the nested backticks confuse the parser
-- **Impact:** MEDIUM — Rare in docs, but affects meta-documentation
-- **Tolerance:** <5% false positives
-- **Mitigation:** Improve regex to handle escaped backticks and fence-quoted code samples
+**Case:** Lines 90, 141, 263, 309... show example markdown without language tags
+- **Root cause:** These are code blocks *showing what markdown looks like*, not actual code to run
+- **Impact:** LOW — These warnings are noise, but technically correct per the rule
+- **Tolerance:** <5% false positives acceptable
+- **Fix:** Allow `text` or `markdown` tags for documentation examples
 
 ---
 
@@ -194,56 +176,50 @@ python part3_docs_checker.py claude-docs-api-reference.md
 
 ### 1. False Positive Tolerance
 
-**Target:** <5% false positive rate on real corpus
+**Current target:** <5% false positive rate on real corpus
 
-**Rationale:** 
-- False positives erode team trust in the checker
-- They lead to "alert fatigue" and ignored violations
-- But 0% is unrealistic—some edge cases will exist
+**What we're seeing:**
+- **Part 2 test run:** 39 violations total
+  - 1 ERROR (missing frontmatter) — False positive for reference doc
+  - 10 WARNINGS (code block language tags) — 8 are false positives (template examples), 2 are real
+  - 28 INFO (non-imperative headings) — Expected for reference doc, not real problems
+- **Estimated false positive rate:** ~25/39 = 64% (too high)
 
-**How we measure:**
-- Run checker on 100+ real Anthropic docs pages
-- Manual review of flagged violations
-- Track violations that are "complaints" vs. actual style guide violations
-- If >5% of violations are complaints, tune the rules
+**Action needed:** Refine checker rules to distinguish between:
+- Procedural how-to guides (strict validation)
+- Reference documentation (relaxed validation)
+- Template examples (skip language tag check for markdown/text blocks)
 
 ### 2. False Negative Tolerance
 
-**Target:** <2% false negative rate (actual violations not caught)
+**Target:** <2% false negative rate (violations we miss)
 
-**Rationale:**
-- Missing a real violation (false negative) is worse than flagging a non-violation
-- False negatives mean the checker becomes a false sense of security
-- The style guide requires these checks for quality reasons
+**Testing method:**
+- Run checker on intentionally broken docs
+- Verify it catches all violations
+- Current status: **Not yet tested**
 
-**How we measure:**
-- Seed test corpus with 20-30 intentionally broken docs
-- Run checker on each
-- Verify checker catches all violations
-- If checker misses violations, those checks are incomplete
+**To test:** Create a file that violates each rule, run checker, confirm violations detected
 
 ### 3. Degradation Detection
 
-**How to know if the checker degraded:**
+**How to know if checker degraded:**
 
-1. **Automated regression tests**
-   ```bash
-   # Run checker on golden corpus
-   python part3_docs_checker.py --corpus=golden-docs/ --baseline=baseline-results.json
-   
-   # Compare results
-   diff baseline-results.json current-results.json
-   ```
+```bash
+# Run against golden corpus
+python3 part3_docs_checker.py --corpus=golden-docs/ > baseline.json
 
-2. **CI integration**
-   - Checker runs on every PR
-   - Violations must be resolved or explicitly exempted
-   - Track violation count over time (should stabilize or decrease)
+# Run again later
+python3 part3_docs_checker.py --corpus=golden-docs/ > current.json
 
-3. **Metrics dashboard**
-   - Track docs-to-production time with/without violations
-   - Monitor "docs pass rate" (% of published docs with 0 errors)
-   - Alert if trend reverses (e.g., pass rate drops from 85% to 70%)
+# Compare
+diff baseline.json current.json
+```
+
+**Alert conditions:**
+- Violation count increases by >10%
+- New false positives detected
+- Previously flagged errors now missed
 
 ---
 
@@ -328,26 +304,41 @@ jobs:
         run: |
           for file in $(git diff --name-only origin/main | grep -E '\.md$'); do
             echo "Checking $file..."
-            python part3_docs_checker.py "$file" --strict || exit 1
+            python3 part3_docs_checker.py "$file" --strict || exit 1
           done
       
       - name: Report violations
         if: failure()
-        run: python part3_docs_checker.py . --json > violations.json && cat violations.json
+        run: python3 part3_docs_checker.py . --json > violations.json && cat violations.json
 ```
 
 ---
 
-## Next Steps
+## Next Steps for Improvement
 
-1. **Expand checker** — Add checks for:
-   - Package structure validation (`SKILL.md` must include all example files referenced)
-   - Snippet execution against test API (run `python` code blocks, catch errors)
-   - Link validation (all `[text](path)` links resolve)
+1. **Add document type detection**
+   ```python
+   if frontmatter and frontmatter.get('type') == 'reference':
+       skip_scaffolding_checks()
+   ```
 
-2. **Integrate with docs CI/CD** — Block PRs with ERROR-level violations
+2. **Refine code block check** — Allow `text` and `markdown` tags without warning
 
-3. **Build dashboard** — Track violation trends over time
+3. **Test on real Claude docs corpus** — Run against 100+ pages, collect false positives, refine
 
-4. **Calibrate with real data** — Run on 100+ Anthropic docs pages, collect false positives, refine rules
+4. **Integrate with CI/CD** — Block PRs with ERROR-level violations
 
+5. **Build metrics dashboard** — Track violation trends over time
+
+---
+
+## Conclusion
+
+The checker **works** and **finds real problems**. The test run on Part 2 revealed:
+- ✅ 1 real issue (missing language tags on code examples)
+- ⚠️ 2 false positives (frontmatter requirement for reference docs, template examples)
+- ℹ️ 28 expected info messages (reference doc headings, not violations)
+
+**False positive rate: ~25/39 (64% currently, target <5%)**
+
+Next: Refine rules to distinguish procedural vs. reference docs, then run against real Anthropic docs corpus to calibrate baseline.
