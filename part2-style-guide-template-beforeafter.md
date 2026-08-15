@@ -89,11 +89,10 @@ cd <PRIMITIVE_SLUG>-template
 └── test_manifest.py     # [REQUIRED] Pre-commit schema assertion test
 ```
 ### Step-by-Step Implementation
-1. Initialize Package Directory
-```text
-mkdir -p ./skills/<PRIMITIVE_IDENTIFIER>
-cd ./skills/<PRIMITIVE_IDENTIFIER>
-touch SKILL.md
+**Unpack Reference Directory:**
+```bash
+curl -L [https://claude.com/assets/skills/](https://claude.com/assets/skills/)<PRIMITIVE_SLUG>-template.tar.gz | tar -xz
+cd <PRIMITIVE_SLUG>-template
 ```
 
 
