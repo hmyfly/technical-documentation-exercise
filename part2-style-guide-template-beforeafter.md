@@ -21,7 +21,7 @@ Every page documenting a Skill manifest (`SKILL.md`) or primitive configuration 
 * `tested_against` (list of models)
 
 #### 2. Upfront Task-Completion Scaffolding
-Every operational guide MUST lead with a standardized cognitive contract block immediately beneath the `# Title`:
+Every operational guide MUST lead with a standardized cognitive contract block:
 * Outcome Promise Blockquote: Formatted as `> **Outcome Promise:** By the end of this guide, you will [imperative action verbs] across Claude applications.`
 * Scaffolding Metadata Table: A 2-column table specifying:
   1. `Target Audience` (e.g., Integration Engineers & Enterprise Platform Builders)
