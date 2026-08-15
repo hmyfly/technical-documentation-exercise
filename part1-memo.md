@@ -54,8 +54,3 @@ Documentation effectiveness is measured by task completion velocity and schema i
 
 ---
 
-### Conclusion
-
-Documentation is a product, and it should be treated with the same rigor as the API it describes. The three recommendations above are mutually reinforcing: a docs-as-code workflow enforces quality at the point of contribution; a task-oriented structure ensures developers can find what they need; and a systematic audit process keeps the content accurate over time. Taken together, they form the foundation of a documentation practice that scales with Anthropic's growth.
-
-I am happy to discuss any of these recommendations in more detail or to draft implementation plans for whichever the team decides to prioritize.
