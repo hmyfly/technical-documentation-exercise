@@ -23,19 +23,21 @@ Guides force manual file assembly from isolated snippets instead of providing a 
 
 ---
 
-## Recommendations
+### Adopt a "Docs as Code" Workflow - Information Architecture & HTTP 301 Consolidation
 
-### 1. Adopt a "Docs as Code" Workflow with Automated Consistency Checks
+All fragmented Skill routes consolidate into an execution-first specification hierarchy:
+Plaintext
+claude.com/docs/skills/
+├── index.md                      <-- Execution Lifecycle & Cross-Surface Compatibility Matrix
+├── authoring.md                  <-- Task-Completion Contract, MWE Quickstart & CLI Verification
+├── schema-reference.md           <-- Declarative YAML/JSON Schema & AST Validation Rules
+├── testing-and-evals.md          <-- Pre-commit AST Linting & Headless Eval Testing (CI/CD)
+└── reference/
+    ├── errors.md                 <-- Standardized Error Codes & Remediation Matrix
+    └── examples/                 <-- Downloadable, CI-Asserted Minimal Working Packages
 
-**Problem:** Documentation written by multiple contributors across different cycles often develops inconsistencies in terminology, voice, and structure—particularly for parameter descriptions, error codes, and model behavior.
-
-**Recommendation:** Integrate documentation into the same pull-request workflow used for code. Specifically:
-
-- Store all documentation in version-controlled Markdown alongside the codebase or in a dedicated docs repository.
-- Add a CI linting step that enforces terminology consistency (e.g., always `assistant` not `AI`, always `messages` array not `conversation history`) and structural requirements (e.g., every API endpoint page must have: Overview, Request parameters, Response object, Error handling, and Code examples in at least Python and curl).
-- Use a custom Vale style configuration to catch banned phrases, passive voice overuse, and missing required sections automatically before review.
-
-**Expected Outcome:** Reduced review cycles, faster onboarding for new documentation contributors, and consistent terminology across the entire docs surface.
+Routing & Context Preservation: Permanently redirect legacy routes (/docs/skills/how-to $\rightarrow$ 301 $\rightarrow$ /docs/skills/authoring) and update [claude.com/docs/llms.txt](https://claude.com/docs/llms.txt) synchronously in the same deployment commit.
+Dual-Consumer Execution Standard: Every operational guide must open with an upfront outcome promise, audience scope, TTHW target, and a single-line curl command to clone a verified reference bundle ready for immediate local testing by developers or IDE agents.
 
 ---
 
