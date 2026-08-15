@@ -46,7 +46,7 @@ If a guide includes working code, it MUST be bundled as a downloadable package d
 ## Content-Type Template: How-to Guide
 
 ---
-`
+```
 title: How to [verb phrase — specific task]
 description: [One sentence outcome: what the reader will accomplish, 20–200 characters]
 version: 1.0.0
@@ -55,12 +55,12 @@ package_language: python  # or typescript, bash, etc.
 tested_against:
   - claude-opus-4-5
   - claude-3.5-sonnet
-`
+```
 ---
 
 ### Authoring <PRIMITIVE_NAME>
 
-> **Outcome Promise:** By the end of this guide, you will author, validate against schema, locally test, and trigger a custom `<PRIMITIVE_NAME>` across Claude applications.
+**Outcome Promise:** By the end of this guide, you will author, validate against schema, locally test, and trigger a custom `<PRIMITIVE_NAME>` across Claude applications.
 
 | Task Scaffolding Dimension | Specification Contract |
 | :--- | :--- |
