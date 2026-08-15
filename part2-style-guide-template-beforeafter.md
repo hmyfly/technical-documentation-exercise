@@ -13,13 +13,12 @@ This file contains three components:
 
 #### 1. Frontmatter Schema Requirements (Deterministic AST Assertions)
 Every page documenting a Skill manifest (`SKILL.md`) or primitive configuration MUST contain a valid YAML frontmatter block adhering to the following schema rules:
-* `name` (string, required): Must match regex `^[a-z0-9-_]+$`. No whitespace or uppercase characters allowed.
-* `version` (semver string, required): Must follow strict semantic versioning (`MAJOR.MINOR.PATCH`, e.g., `"1.0.0"`).
-* `description` (string, required): Exactly one functional sentence defining the procedural output (>= 20 characters, <= 200 characters).
-* `invocation` (enum, required): Must be explicitly declared as either `"automatic"` or `"user_prompted"`.
-* `context_cost` (enum, required): Must be explicitly declared as `"static"` or `"on_demand"`.
-* `runtime_compatibility` (array of strings, required): Must list at least one valid Claude surface target (`"Claude.ai"`, `"Cowork"`, `"Claude for M365"`, or `"Claude Code / Agent SDK"`).
-* `parameters` (object, required if inputs exist): Must be a valid JSON Schema object declaring `properties` and `required` fields.
+* `title` (string)
+* `description` (string)
+* `version` (semver)
+* `package_name` (string)
+* `package_language` (string)
+* `tested_against` (list of models)
 
 #### 2. Upfront Task-Completion Scaffolding
 Every operational guide MUST lead with a standardized cognitive contract block immediately beneath the `# Title`:
