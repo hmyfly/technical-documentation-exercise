@@ -36,7 +36,7 @@ All fragmented Skill routes consolidate into an execution-first specification hi
 └── reference/
     ├── errors.md                 <-- Standardized Error Codes & Remediation Matrix
     └── examples/                 <-- Downloadable, CI-Asserted Minimal Working Packages
-
+```
 Routing & Context Preservation: Permanently redirect legacy routes (/docs/skills/how-to - 301 - /docs/skills/authoring) and update [claude.com/docs/llms.txt](https://claude.com/docs/llms.txt) synchronously in the same deployment commit.
 Dual-Consumer Execution Standard: Every operational guide must open with an upfront outcome promise, audience scope, TTHW target, and a single-line curl command to clone a verified reference bundle ready for immediate local testing by developers or IDE agents.
 
