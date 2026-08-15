@@ -123,22 +123,4 @@ The revised page below applies the style guide:
 ---
 
 
-## Next steps
 
-- [Stream responses in real time](../how-to/stream-responses.md)
-- [Messages API reference](../reference/messages.md)
-- [Error codes reference](../reference/errors.md)
-
----
-
-### Annotation: What Changed and Why
-
-| Issue in "Before" | Fix in "After" | Style Guide Rule |
-|---|---|---|
-| Filler phrases: "is a great way to utilize," "All you have to do is" | Direct, action-oriented language | Voice and Tone |
-| Refers to model as "AI," "AI system" | Uses "Claude," "the model," "API" | Terminology |
-| Unformatted, single-line code example | Properly formatted, multi-line Python with env-based auth | Code Examples |
-| `print(response)` prints the full object — not useful | `print(message.content)` with explanation of the field | Code Examples |
-| Vague error guidance: "you should probably catch these" | Concrete try/except block with specific exception types | Code Examples |
-| No structure; reads as a wall of prose | H2 sections for each task; scannable | Headings |
-| `temperature` mentioned without definition | Removed (belongs in a separate reference entry, not this guide) | Content type discipline |
