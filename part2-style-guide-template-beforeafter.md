@@ -9,116 +9,35 @@ This file contains three components:
 
 ## Style Guide Excerpt
 
-### Anthropic Developer Documentation Style Guide (Excerpt)
+### Standard ID: DOC-SKILL-001 (Skill Primitive Schema & Task Execution Contract)
 
-#### Voice and Tone
+#### 1. Frontmatter Schema Requirements (Deterministic AST Assertions)
+Every page documenting a Skill manifest (`SKILL.md`) or primitive configuration MUST contain a valid YAML frontmatter block adhering to the following schema rules:
+* `name` (string, required): Must match regex `^[a-z0-9-_]+$`. No whitespace or uppercase characters allowed.
+* `version` (semver string, required): Must follow strict semantic versioning (`MAJOR.MINOR.PATCH`, e.g., `"1.0.0"`).
+* `description` (string, required): Exactly one functional sentence defining the procedural output (>= 20 characters, <= 200 characters).
+* `invocation` (enum, required): Must be explicitly declared as either `"automatic"` or `"user_prompted"`.
+* `context_cost` (enum, required): Must be explicitly declared as `"static"` or `"on_demand"`.
+* `runtime_compatibility` (array of strings, required): Must list at least one valid Claude surface target (`"Claude.ai"`, `"Cowork"`, `"Claude for M365"`, or `"Claude Code / Agent SDK"`).
+* `parameters` (object, required if inputs exist): Must be a valid JSON Schema object declaring `properties` and `required` fields.
 
-Write for a developer audience. Assume technical competence; do not over-explain standard programming concepts. Be direct, precise, and respectful of the reader's time.
+#### 2. Upfront Task-Completion Scaffolding
+Every operational guide MUST lead with a standardized cognitive contract block immediately beneath the `# Title`:
+* Outcome Promise Blockquote: Formatted as `> **Outcome Promise:** By the end of this guide, you will [imperative action verbs] across Claude applications.`
+* Scaffolding Metadata Table: A 2-column table specifying:
+  1. `Target Audience` (e.g., Integration Engineers & Enterprise Platform Builders)
+  2. `Estimated TTHW (Time-to-Hello-World)` (explicitly in minutes, e.g., 10 Minutes)
+  3. `Required Preconditions` (workspace tiers, auth scopes, tooling)
+  4. `Tested Runtime Baseline` (e.g., Claude 3.5 Sonnet / Claude 3.7)
 
-| ✅ Do | ❌ Don't |
-|---|---|
-| "Send a request to the Messages endpoint." | "In order to begin utilizing the Messages endpoint, you will want to send a request." |
-| "The model returns a `Message` object." | "The AI will give back a Message object for you." |
-| "Set `max_tokens` to limit output length." | "You can optionally set the max_tokens parameter if you want to." |
+#### 3. Atomic Package Delivery (Zero Isolated Snippets)
+* Operational guides MUST provide a single-line `curl` or `git clone` command within the first 150 words to deploy a complete, verified directory bundle (`SKILL.md`, runtime scripts, reference tokens, test harness).
+* Disconnected snippets that require manual file creation and indentation guesswork are strictly rejected by CI validation.
 
-**Tone principles:**
-- **Confident, not arrogant.** State facts directly. Avoid hedging with "should," "might," "could" when describing deterministic behavior.
-- **Helpful, not condescending.** Do not over-explain. Do not preface instructions with "Simply" or "Just"—it signals the writer, not the reader.
-- **Precise, not pedantic.** Use exact terminology consistently. Avoid synonyms that could imply behavioral differences where there are none.
-
----
-
-#### Terminology
-
-Use the following terms consistently across all documentation.
-
-| Use | Do not use |
-|---|---|
-| `model` | AI, artificial intelligence, system, bot |
-| `assistant` | AI assistant, Claude assistant (unless branding requires) |
-| `messages` array | conversation, chat history, conversation history |
-| `tool use` | function calling, tool calling |
-| `context window` | context length, token limit (unless referring specifically to limits) |
-| `prompt` | instruction, query (in most contexts) |
-| `stream` (noun/verb) | streaming response, streamed output |
-| `stop sequence` | stop token, end token |
-
----
-
-#### Code Examples
-
-Every code example must:
-
-1. Be runnable as written, or include a clear note about required substitutions (e.g., `YOUR_API_KEY`).
-2. Include language-tagged fenced code blocks.
-3. Follow the canonical example order: **Python first, then curl**, then other languages if relevant.
-4. Use the most recent stable SDK version unless the example is explicitly documenting a version difference.
-5. Include inline comments only when the code does something non-obvious. Do not comment every line.
-
-**Python example format:**
-
-```python
-import anthropic
-
-client = anthropic.Anthropic()
-
-message = client.messages.create(
-    model="claude-opus-4-5",
-    max_tokens=1024,
-    messages=[
-        {"role": "user", "content": "Hello, Claude"}
-    ]
-)
-
-print(message.content)
-```
-
-**curl example format:**
-
-```bash
-curl https://api.anthropic.com/v1/messages \
-  --header "x-api-key: $ANTHROPIC_API_KEY" \
-  --header "anthropic-version: 2023-06-01" \
-  --header "content-type: application/json" \
-  --data '{
-    "model": "claude-opus-4-5",
-    "max_tokens": 1024,
-    "messages": [{"role": "user", "content": "Hello, Claude"}]
-  }'
-```
-
----
-
-#### Parameter Documentation
-
-Each parameter entry must include:
-
-- **Name** — exact field name as it appears in the API, formatted as inline code.
-- **Type** — data type (string, integer, array, object, boolean).
-- **Required / Optional** — explicit label.
-- **Default** — the default value if optional, or "None" if there is no default.
-- **Description** — one to three sentences. What it does, not just what it is. Include behavioral notes (e.g., "Values above 1.0 increase randomness").
-- **Constraints** — valid range, allowed values, or format requirements.
-
----
-
-#### Headings
-
-- Use sentence case for all headings: `Send your first message`, not `Send Your First Message`.
-- Do not skip heading levels (do not go from H2 to H4).
-- Keep headings descriptive and action-oriented in how-to guides: `Configure streaming`, not `Streaming configuration`.
-
----
-
-#### Notes, Warnings, and Tips
-
-Use callout blocks sparingly. Each callout should contain information the reader might otherwise skip but genuinely needs.
-
-- **Note:** Additional context or clarification that is helpful but not critical.
-- **Warning:** Actions that could cause data loss, unexpected charges, or security risk.
-- **Tip:** Non-obvious shortcuts or best practices.
-
-Do not use callouts to repeat information already stated in the main body.
+#### 4. Syntactic & Code Block Conformance Rules
+* Fenced Code Tagging: Every code block MUST declare an explicit language identifier (`yaml`, `json`, `bash`, `python`, or `text`). Un-tagged code fences fail pre-merge linting.
+* Variable Token Standardization: Dynamic variables inside code snippets MUST follow the `<UPPERCASE_SNAKE_CASE>` convention (e.g., `<SKILL_NAME>`, `<COMPANY_NAME>`). Hardcoded synthetic company or skill names are prohibited in template specifications.
+* Imperative Action Syntax: Every procedural instruction item in a numbered sequence MUST begin with an imperative action verb (*Initialize*, *Configure*, *Validate*, *Deploy*).
 
 ---
 
