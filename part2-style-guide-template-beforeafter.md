@@ -88,7 +88,13 @@ cd <PRIMITIVE_SLUG>-template
 │   └── tokens.json
 └── test_manifest.py     # [REQUIRED] Pre-commit schema assertion test
 ```
-
+### Step-by-Step Implementation
+1. Initialize Package Directory
+```text
+mkdir -p ./skills/<PRIMITIVE_IDENTIFIER>
+cd ./skills/<PRIMITIVE_IDENTIFIER>
+touch SKILL.md
+```
 
 
 
