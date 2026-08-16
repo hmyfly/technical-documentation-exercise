@@ -10,4 +10,4 @@
 
 **Handle the team that refuses.** Dig into why: too busy? Don't see value? Don't trust the tool? For "too busy," frame it as time saved per person per year. For "don't see value," have a junior engineer try their docs—watching them struggle proves the problem. For "don't trust the tool," let them reject violations explicitly; listen to pushback and refine rules. Only escalate if they block org-wide adoption, and only with data: "Team X's docs cost us 40% longer onboarding than teams using the standard."
 
-**This trades speed for durability.** I won't hit 100% adoption in nine weeks, but the teams that adopt will stay adopted because the value is real.
+**This trades speed for durability.** I won't hit 100% adoption in eight weeks, but the teams that adopt will stay adopted because the value is real.
