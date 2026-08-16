@@ -427,7 +427,4 @@ Your skill is ready to enable in Claude.ai or Claude Code.
 - [Agent Skills specification](https://agentskills.io/specification)
 - [Skills in Claude Code](https://code.claude.com/docs/en/skills)
 - [Example skills repository](https://github.com/anthropics/skills/tree/main/skills)
-```
-
----
 
