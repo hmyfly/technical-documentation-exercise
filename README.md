@@ -20,26 +20,6 @@ This project shows how to find doc problems, set a clear standard, check docs wi
 
 ---
 
-## Quick start
-
-```bash
-git clone https://github.com/hmyfly/technical-documentation-exercise
-cd technical-documentation-exercise
-
-# Run checker on a markdown file
-python3 part3_docs_checker.py part2-style-guide-template-beforeafter.md
-
-# JSON output
-python3 part3_docs_checker.py part2-style-guide-template-beforeafter.md --json
-
-# Fail with exit code 1 if violations exist
-python3 part3_docs_checker.py part2-style-guide-template-beforeafter.md --strict
-```
-
-Requires **Python 3.8+**. No external packages.
-
----
-
 ## The 4 parts
 
 ## Part 1: Audit
