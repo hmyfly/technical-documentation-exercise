@@ -1,106 +1,88 @@
 # Part 4: Adoption Strategy
----
 
-## The Approach: Lead with Value, Not Mandates
+## The Problem
 
-### 1. Lead with Evidence, Not Evangelism
+You've built DOC-SKILL-001 (Part 2) and proven it works with a checker (Part 3) that finds real bugs in production docs. But now you need multiple product teams to adopt this standard—and none of them report to you. You have no authority to mandate it. How do you drive adoption across an organization where incentives aren't aligned and competing priorities rule?
 
-**Don't:** Hold meetings saying "You should use this standard because documentation matters."
-
-**Do:** Show up with specific data from *their* docs:
-- Run the checker on one team's existing how-to guides
-- Show them the 3 ERRORs the checker found (from Test 2: missing scaffolding table, no entry point, etc.)
-- Let them see their docs flagged for real problems
-- Frame it: "Your docs have these gaps. Here's a tool that catches them automatically."
-
-**Why this works:** People adopt tools that solve *their* problems, not organizational problems. The checker isn't a burden; it's a gift that finds bugs they didn't know existed.
+The answer: **lead with evidence, not mandates.** Show teams that the standard solves their problems, make adoption trivial, celebrate early wins, and let social proof do the work.
 
 ---
 
-### 2. Make It Friction-Free to Adopt
+## The Five-Point Playbook
 
-**Remove every barrier to getting started:**
+**1. Lead with Their Data, Not Your Vision**
 
+Don't hold meetings about documentation quality. Instead, run the checker on one team's existing docs and show up with three concrete errors: missing scaffolding table, no entry point for examples, broken onboarding flow. Let them see the violations. Frame it as: "Your docs have these gaps. Here's a tool that catches them automatically. Want to try it?"
+
+People adopt tools that solve *their* problems, not organizational problems. The checker is a gift that finds bugs they didn't know existed.
+
+**2. Remove Every Friction Point**
+
+Make adoption a three-step copy-paste:
 ```bash
-# One command to validate their docs
 python3 part3_docs_checker.py my-docs.md --json
-
-# One template to follow
 cp template-how-to-guide.md my-new-guide.md
-
-# One GitHub Actions workflow to add
 cp .github/workflows/docs-validate.yml your-repo/.github/workflows/
 ```
 
-**Start small:** Don't ask them to rewrite all their docs at once. Propose: "Add the checker to your CI. Going forward, new docs follow the standard. Existing docs get a grace period."
+Propose: "Add the checker to CI going forward. Existing docs get a grace period. No rewrite required today." Provide an escape hatch (`# DOC-SKIP: checker`) so teams can override specific violations. This gives them control and prevents "that tool is too strict" complaints.
 
-**Provide escape hatches:** Add a `# DOC-SKIP: checker` comment to explicitly skip checks if needed. This gives teams control and prevents "that tool is too strict" complaints.
+**3. Handle the Team That Doesn't Care**
 
----
+One team will ignore it entirely. Dig into *why*: Are they too busy? Don't see the value? Don't trust the tool?
 
-### 3. Address the Ignorer Team (The One That Doesn't Care)
+- **Too busy:** "Your dev team spends 2 hours onboarding per person because docs are unclear. The checker + template saves 30 minutes per person, per year." (Frame it as time saved, not new work.)
+- **Don't see value:** Let a junior engineer try to follow their guide. Watch them struggle. They'll see the problem immediately.
+- **Don't trust the tool:** Allow explicit rejection of violations. If they mark the same rule as false positive three times, that rule probably needs refinement. Listening to pushback builds credibility.
 
-**Scenario:** One team's docs are messy, they know it, they don't care. They have a backlog and "docs quality" isn't on it.
+If a team genuinely blocks org-wide adoption despite these efforts, escalate—but only with clear data: "Team X's docs have 8 critical violations. New hires spend 40% longer onboarding than teams using the standard." Leadership intervenes when ROI is undeniable, not when you're just frustrated.
 
-**Don't:** Complain to leadership. That signals you can't drive adoption.
+**4. Find Your First Fan and Amplify Them**
 
-**Do:** Find the real lever:
-- Dig into why they ignore it. Is it: too busy? Don't see the value? Don't trust the checker?
-- For "too busy": Frame it as saving time. "Your dev team spends 2 hours onboarding per person because your docs are unclear. The checker + template saves 30 minutes per person, per year."
-- For "don't see value": Run the checker on their docs. Show them real violations. Let a junior engineer try to follow their guide and struggle. They'll see the problem.
-- For "don't trust the tool": Let them reject violations explicitly. Build in a review step: "Is this a real problem?" If they mark it as false positive 3x, it's probably a rule that needs refinement, not a team that's being stubborn.
+One team will "get it" immediately. Maybe they already care about docs quality. Partner with them for Weeks 3–4. Once they're live and seeing improvements, celebrate them publicly: "Team A reduced onboarding bugs by 40% in the first month. Check out their improved guides." Show before/after. Make adopters heroes. Social proof beats mandates every time.
 
-**The nuclear option (use only if necessary):** If a team genuinely blocks adoption org-wide, escalate up—but *only* with data: "Team X's docs have 8 unfixed violations. New onboarded engineers report X issue because Y is missing. Here's the cost." Let leadership decide if it's worth forcing. (But this should be rare if you've done steps 1–2 well.)
+**5. Measure Impact, Not Compliance**
 
----
+Wrong metric: "X% of teams are using the checker."
 
-### 4. Build Momentum with Early Adopters
+Right metrics:
+- **Violations caught per week** (trending down = continuous improvement)
+- **Doc-to-first-code latency** (time from page load to working example, target <5 minutes)
+- **New hire onboarding time** (measure now, target 20% reduction by Week 12)
+- **"Docs are clear" rating** (post-launch survey)
 
-**Find the team that gets it first.** Maybe they already care about docs quality. They'll adopt, find value, tell other teams. Use them as your proof:
-
-- **Public wins:** Celebrate when teams adopt. "Team A is now using DOC-SKILL-001. They reduced onboarding docs bugs by 40% in the first month."
-- **Showcase improvements:** Show the before/after of a team's docs after adopting the standard.
-- **Make adopters heroes:** Send a message to the org: "Team B just joined DOC-SKILL-001. Check out their improved guides."
-
-Social proof beats mandates every time.
+When people see these trending in the right direction, they don't adopt because they have to—they adopt because the value is real and visible.
 
 ---
 
-### 5. Measure Adoption, Not Compliance
+## The Nine-Week Timeline (with Checkpoints)
 
-**Wrong metric:** "X% of teams are using the checker."
+| Weeks | Action | Success Criteria | If This Fails |
+|-------|--------|------------------|---------------|
+| 1–2 | Run checker on 5 high-traffic docs; share violations with each team | 3+ teams express interest in trying the standard | Violations are being dismissed as false positives → Rule refinement needed; move to Week 3 with lower false positive bar |
+| 3–4 | Partner with one early-adopter team; help them implement in CI | Team reports checker working, adopts for new docs going forward | Adopter finds checker blocking too much → Calibrate rules based on feedback; build false positive suppression into tool |
+| 5–6 | Showcase adopter's improvements; publish metrics dashboard | 20% reduction in new-hire onboarding time OR 2+ additional teams interested | No visible improvement yet → Extend timeline to Week 8; measure again |
+| 7–8 | Open adoption to all teams; provide templates and training | 50% of teams have integrated checker into CI (new docs only) | Adoption stalling → Identify blockers; one-on-one outreach to resistant teams |
+| 9+ | Monitor metrics; iterate rules based on feedback; celebrate adopters | 75%+ of teams using checker; false positive rate <5%; org-wide violations trending down | Violations spiking → Investigate whether new rules are too strict; community vote on controversial rules |
 
-**Right metrics:**
-- Violations caught and fixed per week (trending down = improvement)
-- Doc-to-run latency (time from page load to first code execution)
-- New hire onboarding time with updated docs vs. old docs
-- "Docs are clear" rating in post-launch surveys
-
-When people see these metrics trending in the right direction, they *want* to adopt.
-
----
-
-## Summary: The Adoption Playbook
-
-1. **Show value first** — Run the checker on their existing docs, show real violations
-2. **Make it easy** — One command, one template, one workflow
-3. **Provide control** — Allow teams to mark violations as false positives; refine rules based on feedback
-4. **Lead with early adopters** — Find one team that cares, let them prove the value
-5. **Use data, not mandates** — Let metrics speak; leadership only intervenes with clear ROI
-6. **For the ignorer team** — Understand why they're ignoring it, address the real blocker (time, trust, or value), and only escalate if it blocks org-wide adoption
-
-**The core insight:** You're not trying to force compliance. You're trying to make docs quality *obvious* and *easy*. Once that happens, teams adopt not because they have to, but because it solves their problem.
+**Key insight:** This trades speed for durability. You won't hit 100% adoption in nine weeks, but the teams that do adopt will *stay* adopted because the value is real.
 
 ---
 
-## Implementation Timeline
+## What Can Go Wrong (and How to Fix It)
 
-| Week | Action | Goal |
-|------|--------|------|
-| 1-2 | Run checker on 5 high-traffic docs, share results with each team | Establish value with data |
-| 3-4 | Partner with one early-adopter team, help them implement | Proof of concept |
-| 5-6 | Showcase their improvements, publish metrics | Social proof |
-| 7-8 | Open adoption to all teams, provide templates + training | Scale |
-| 9+ | Monitor metrics, refine rules based on feedback, celebrate adopters | Iterate |
+**Early adopter finds false positives** → Checker loses credibility org-wide. *Fix:* During Week 3–4, calibrate rules aggressively. Get false positive rate below 5% before scaling to Week 7–8.
 
-This approach trades speed for durability. You might not get 100% adoption fast, but the teams that *do* adopt will stay adopted because the value is real.
+**Leadership sees no ROI by Week 8** → Adoption stalls before reaching critical mass. *Fix:* Show interim metrics (Week 5–6 survey results, before/after onboarding time) before making the business case. Frame in leadership terms: "Faster onboarding = faster shipping."
+
+**Resistant team refuses adoption and influences others** → Political blocker. *Fix:* Make adoption opt-in, not mandatory. Celebrate early adopters loudly enough to create FOMO. One resistant team doesn't block progress if ten others are winning.
+
+**Checker becomes stale; rules drift from reality** → Tool loses trust. *Fix:* Tie checker rules to Part 2 (living style guide). Automate a diff check in CI: if Part 2 and Part 3 diverge, fail the build. Rules stay in sync or nobody ships.
+
+---
+
+## The Core Insight
+
+You're not trying to force compliance. You're trying to make documentation quality *obvious* and *easy*. Once that happens, teams don't adopt because they're mandated to—they adopt because it solves the problem they already have: "How do I write docs that actually help people?"
+
+That's durable adoption.
