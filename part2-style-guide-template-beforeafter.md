@@ -431,18 +431,3 @@ Your skill is ready to enable in Claude.ai or Claude Code.
 
 ---
 
-### Annotation: What Changed and Why
-
-| Issue in "Before" | Fix in "After" | Style Guide Rule |
-|---|---|---|
-| No frontmatter metadata or entry point | Frontmatter with title, description, version, package_name, tested_against, git clone link at top | Task-completion scaffolding; Atomic package delivery |
-| Vague introduction: "Learn how to..." | Specific outcome promise: "you will create a skill directory, structure SKILL.md, add files, validate, and package" | Outcome promise; Imperative action verbs |
-| No scaffolding metadata table | Complete table with Target Audience, Time-to-Hello-World (20 min), Prerequisites, Tested Against, Get Started | Cognitive contract; Upfront clarity |
-| Directory structure shown first, no context | Structure shown in Step 3 after creating SKILL.md, with purpose for each folder | Content discipline; Task flow |
-| "Creating a SKILL.md file" section is vague | Step 2 shows complete, concrete SKILL.md example with frontmatter and markdown body | Atomic package delivery; Code examples |
-| "Packaging your skill" buried at end | Step 5 integrates packaging into main workflow with clear ZIP structure and upload instructions | Workflow integration |
-| "Testing" split into Before/After uploading, scattered | Step 6 integrates testing into workflow after upload with specific validation checkpoints | Imperative action verbs; Clear sequencing |
-| No local validation tool in workflow | Step 4 provides `test_manifest.py` script with expected output and error handling | Zero isolated snippets; CI-gated quality |
-| Filler language: "can range from simple to complex" | Specific, actionable language throughout: "Create," "Configure," "Validate," "Test," "Package" | Direct, action-oriented voice |
-| No clear "best practices" connection to structure | Best practices section appears at end with concrete rationale for skill design decisions | Content completeness |
-
