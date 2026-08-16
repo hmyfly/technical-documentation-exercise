@@ -1,4 +1,4 @@
-# Technical Documentation Exercise — Anthropic Submission
+# Technical Documentation Exercise — Claude Docs
 
 A complete documentation engineering system: audit → standard → checker → adoption strategy.
 
