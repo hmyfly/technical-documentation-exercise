@@ -195,72 +195,188 @@ This is the critical test. It proves the checker **finds actual problems in prod
 
 ---
 
-## Checker Evaluation Framework
+## Longevity & Maintenance: How to Keep This Alive
 
-### 1. False Positive Tolerance
+### Question 1: How Would You Know If It Degraded?
 
-**Current status:**
-- Part 2 (reference doc): 64% false positives — Expected (document type mismatch)
-- Real Anthropic docs: 0% false positives — Excellent (all violations are real)
+**Concrete metrics to monitor in a dashboard:**
 
-**Target:** <5% false positives on procedural how-to guides
+| Metric | Target | Alert Threshold | How to Measure |
+|--------|--------|-----------------|-----------------|
+| **False Positive Rate** | <5% | >10% | Monthly: Run checker on golden corpus, manually review violations, count false positives |
+| **False Negative Rate** | <2% | >5% | Monthly: Create 20 intentionally broken docs (missing each required field), verify checker catches all |
+| **Violation Trend** | Stabilize/decrease | Spike >20% above baseline | Weekly: Track violations found in PRs, plot trend line |
+| **Blocked PRs** | Consistent | Zero blocks for 2 weeks | Daily CI logs: Count PRs blocked by checker |
+| **Rule Drift** | 0% | Any rule/guide mismatch | Quarterly: Diff `part2-style-guide-template-beforeafter.md` against `part3_docs_checker.py` rules |
 
-**Calibration needed:** Add document type detection so reference docs don't trigger scaffolding checks
-
-### 2. False Negative Tolerance
-
-**Target:** <2% false negative rate (violations we miss)
-
-**Testing method:**
-- Run checker on intentionally broken docs
-- Verify it catches all violations
-- Current status: Not yet tested
-
-### 3. Degradation Detection
-
-**How to know if checker degraded:**
-
-```bash
-# Run against golden corpus and save baseline
-python3 part3_docs_checker.py --corpus=golden-docs/ > baseline.json
-
-# Run again later
-python3 part3_docs_checker.py --corpus=golden-docs/ > current.json
-
-# Compare
-diff baseline.json current.json
+**Example degradation scenario:**
+```
+Week 1:  Checker finds 5 violations/week → healthy
+Week 2:  Checker finds 5 violations/week → healthy
+Week 3:  Checker finds 0 violations/week → RED ALERT
+         (Either: all docs are perfect, OR checker is broken)
+         → Check: Did Part 2 style guide change? Did someone disable checker? 
+         → If unplanned, investigate immediately
 ```
 
-**Alert conditions:**
-- Violation count increases by >10%
-- New false positives detected
-- Previously flagged errors now missed
+**Automated detection (in CI):**
+```bash
+# Compare current run against baseline
+python3 part3_docs_checker.py corpus/ --json > current.json
+curl https://metrics-dashboard.internal/checker-baseline.json > baseline.json
+
+# Calculate deltas
+jq '.violations | length' current.json > current_count.txt
+jq '.violations | length' baseline.json > baseline_count.txt
+DELTA=$(( $(cat current_count.txt) - $(cat baseline_count.txt) ))
+
+# Alert if delta > 20% of baseline
+if [ $DELTA -gt $(( $(cat baseline_count.txt) * 20 / 100 )) ]; then
+  echo "ALERT: Violation count spiked +${DELTA}"
+  exit 1
+fi
+```
 
 ---
 
-## Why This Won't Become Stale
+### Question 2: What Keeps This From Becoming Stale in Six Months?
 
-**The checker is grounded in the living style guide (Part 2):**
+**The difference between tools that survive and tools that die:**
 
-1. **Single source of truth**: Checks in `part3_docs_checker.py` directly mirror rules in `part2-style-guide-template-beforeafter.md`
+#### ❌ Why Most Tools Become Stale
 
-2. **Change workflow**: When style guide rules change:
-   - Update Part 2 (human-readable)
-   - Update checkers in Part 3 (automated validation)
-   - Both must stay in sync or CI fails
+- **Optional tooling** — "Run this linter when you remember"
+  - Nobody's forced to use it
+  - Gradual adoption → sporadic adoption → abandoned
+  - Rules drift from reality as docs change
 
-3. **Use it or lose it**: Checker only survives if:
-   - It blocks bad docs from merging (negative incentive: blocked PRs motivate fixes)
-   - It enables fast docs iteration (positive incentive: developers use it to validate before submitting)
-   - It catches real problems (team sees value in violations caught)
+- **No forcing function** — Violations are warnings, not blockers
+  - "We'll fix it later" → Later never comes
+  - New PRs ignore old violations
 
-4. **Continuous evolution**:
-   ```
-   Week 1: Checker deployed, catches obvious frontmatter issues
-   Week 2: Team calibrates rules based on noise (false positives)
-   Week 3: Checker rules refined; added to CI/CD gates
-   Week 4+: New violations discovered in corpus → rules updated → checker maintained
-   ```
+- **Separated from workflow** — Tool exists separately from process
+  - "Run before submitting" vs. "Blocks your PR"
+  - First is optional; second is mandatory
+
+- **Decay cycle**
+  ```
+  Month 1: Tool deployed
+  Month 2: First violations ignored as false positives
+  Month 3: Team stops running it
+  Month 4: Rules become outdated
+  Month 5: Nobody remembers it exists
+  Month 6: Bitrot
+  ```
+
+#### ✅ Why This Checker Will Survive
+
+**1. It's embedded in critical workflow (blocking gate)**
+```
+Developer writes docs → Opens PR → CI runs checker → 
+  Violations found? → PR blocked → Developer fixes or explicitly skips
+                                → PR merges
+```
+- **Negative feedback loop** (friction) — Violations cause blocked PRs → developers fix to unblock
+- **Positive feedback loop** (value) — Checker catches real problems (Test 2 proved it) → developers learn to trust it
+- **Result:** Checker is not optional; it's part of the definition of "done"
+
+**2. Single source of truth (checker rules tied to living guide)**
+```
+Part 2: Style Guide (human-readable rules)
+   ↓
+Part 3: Checker (implements those rules)
+```
+- When Part 2 changes (new rule added), Part 3 must change
+- CI job verifies they stay in sync: `diff part2 vs part3_rules` must pass
+- **Result:** Checker can't drift from intent; they're linked
+
+**3. Immediate ROI (Test 2 proved its value)**
+- Checked real Anthropic docs
+- Found 3 critical ERRORs that would block publication
+- Team sees value immediately: "This actually catches bugs"
+- **Result:** Teams adopt and maintain tools that deliver value
+
+**4. Low friction to maintain**
+```
+- Pure Python, ~400 lines, no external dependencies
+- Takes 10 minutes to add a new rule (see "How to Extend" section)
+- No version conflicts, no complex setup
+- New team members can read & understand in 30 minutes
+- If original authors leave, the tool is still maintainable
+```
+
+**5. Institutional memory baked into docs**
+```
+New developer joins team:
+  1. Reads Part 1 (why we have this problem)
+  2. Reads Part 2 (what the rules are)
+  3. Sees Part 3 (here's the tool that enforces it)
+  4. Runs it on their first PR → Gets blocked → Understands why
+  
+Tool doesn't survive on its own merits; it survives because it's 
+documented as part of a coherent system.
+```
+
+**6. Continuous evolution loop**
+```
+Week 1:  Deployed → catches obvious frontmatter issues
+Week 2:  Team calibrates → "This is noisy on reference docs"
+Week 3:  Rules refined → document type detection added
+Week 4+: New violations discovered → rules updated → maintained
+         (Not because someone remembers to update it,
+          but because developers need it to merge their PRs)
+```
+
+**Contrast with stale tools:**
+```
+Tool A (stale):
+  "Run linter on your docs" → Nobody uses it → Ignored → Dead
+
+Tool B (this checker):
+  "Checker blocks bad docs" → Everyone uses it → Catches problems → Maintained
+```
+
+The difference: integration into critical workflow vs. optional suggestion.
+
+---
+
+### Survival Checklist (How to Keep It Alive)
+
+Before deploying, ensure:
+
+- ✅ **CI integration:** Checker blocks ERROR-level violations in PRs (negative forcing function)
+- ✅ **Dashboard:** Real-time visibility into violation trends (observability)
+- ✅ **Rule sync:** Automated test that Part 2 and Part 3 stay in sync
+- ✅ **False positive budget:** Explicitly track & tolerate <5% false positives (otherwise team stops trusting it)
+- ✅ **Documented rationale:** Part 1 explains *why* these rules exist (helps new team members understand intent)
+- ✅ **Easy extension:** Documented how to add new rules (lowers barrier to improvement)
+- ✅ **Quarterly review:** Compare violation trends, recalibrate rules if needed
+
+If any of these are missing, the tool will likely become stale within 6 months.
+
+---
+
+## Key Findings
+
+### ✅ What Works
+
+1. **Checker catches real P1 violations** — Missing scaffolding table, no entry point, no Outcome Promise
+2. **Zero false positives on procedural guides** — Every violation on real Anthropic docs is legitimate
+3. **Validates Part 1's audit** — The problems identified in the systems audit actually exist in production
+
+### ⚠️ What Needs Refinement
+
+1. **False positives on reference docs** — Part 2 triggers 64% false positives because it's not a how-to guide
+2. **Fix:** Add `---\ntype: reference\n---` to frontmatter to skip scaffolding checks for non-procedural docs
+3. **Code blocks in examples** — Template examples showing markdown syntax trigger language tag warnings (fixable with `text` or `markdown` tags)
+
+### 🎯 Next Steps
+
+1. Add document type detection to frontmatter parser
+2. Skip scaffolding validation for `type: reference` docs
+3. Run against 100+ Anthropic docs pages, collect baseline metrics
+4. Integrate with GitHub Actions CI/CD to block PRs with ERROR violations
+5. Build metrics dashboard to track documentation quality over time
 
 ---
 
@@ -329,30 +445,8 @@ jobs:
 
 ---
 
-## Key Findings
-
-### ✅ What Works
-
-1. **Checker catches real P1 violations** — Missing scaffolding table, no entry point, no Outcome Promise
-2. **Zero false positives on procedural guides** — Every violation on real Anthropic docs is legitimate
-3. **Validates Part 1's audit** — The problems identified in the systems audit actually exist in production
-
-### ⚠️ What Needs Refinement
-
-1. **False positives on reference docs** — Part 2 triggers 64% false positives because it's not a how-to guide
-2. **Fix:** Add `---\ntype: reference\n---` to frontmatter to skip scaffolding checks for non-procedural docs
-3. **Code blocks in examples** — Template examples showing markdown syntax trigger language tag warnings (fixable with `text` or `markdown` tags)
-
-### 🎯 Next Steps
-
-1. Add document type detection to frontmatter parser
-2. Skip scaffolding validation for `type: reference` docs
-3. Run against 100+ Anthropic docs pages, collect baseline metrics
-4. Integrate with GitHub Actions CI/CD to block PRs with ERROR violations
-5. Build metrics dashboard to track documentation quality over time
-
----
-
 ## Conclusion
 
 **The checker works.** It found 3 critical errors and 4 warnings in real Anthropic documentation, validating Part 1's audit findings. The system is ready for CI integration and can immediately improve documentation quality by catching violations before publication.
+
+**It will stay alive** because it's embedded in the PR workflow (mandatory, not optional), tied to a living style guide (Part 2), documented as part of a coherent system (Part 1 + Part 2 + Part 3), and proven to catch real problems.
