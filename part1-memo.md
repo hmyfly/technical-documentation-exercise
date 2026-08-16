@@ -1,53 +1,60 @@
-# Part 1: Systems Audit & Architecture - Upgrading Skills into an Executable Docs Pipeline
+# Part 1: Systems Audit & Architecture
+## From Publishing Information to Designing Task Completion
 
 ---
 
 ## Executive Summary
-**From "Publishing Information" to "Designing Task Completion"**
 
-The core failure across [claude.com/docs](https://claude.com/docs) is treating documentation as a static repository of descriptive text rather than an engineered interface for successful task completion. Operational guides (how-tos) must commit upfront to specific outcomes, time estimates, and prerequisites—then deliver downloadable, tested packages that developers can run immediately, not isolated code snippets requiring manual assembly.
+The main problem with these docs is simple: they explain features, but they do not help people finish tasks.
 
-In an agent-native ecosystem, documentation has two first-class consumers: human engineers and autonomous AI agents (ingesting via llms.txt). When documentation merely describes features instead of enabling immediate, validated action, both audiences fail. This audit identifies three priority gaps and proposes a "docs as code" workflow that treats guides as executable specifications with machine-validated frontmatter, consistent scaffolding, and atomic package delivery.
+Good docs should do two things well:
+- Help people get the job done fast
+- Help AI tools read and use the content safely
+
+Right now, the docs are too vague, too split up, and too hard to run. They need clear structure, working examples, and strong checks before they are published.
 
 ---
 
 ## Prioritized Audit Findings
 
-**P0 — Unvalidated Frontmatter Contracts (SKILL.md) Across Dual Audiences**
+**P0 — Unchecked SKILL.md files break trust**
 
-Guides present `SKILL.md` files as informal text samples without machine-enforced schema validation. Required metadata fields (`title`, `description`, `version`, `package_name`, `package_language`, `tested_against`) are not validated at build time via CI linting. This causes:
-- Developers upload malformed manifests (missing fields, incorrect semver, invalid regex patterns)
-- AI agents fail silent parse validation when reading manifests from llms.txt
-- No single source of truth for what makes a valid manifest
+`SKILL.md` files are treated like loose text files, not checked documents. Required fields can be missing, wrong, or hard for AI tools to read.
 
-**Fix:** Implement local `test_manifest.py` validation in every package and CI gates that enforce frontmatter schema before merge.
+This causes:
+- Missing fields
+- Bad version numbers
+- Parse errors for AI tools
+- No single source of truth
 
----
-
-**P1 — Omission of Upfront Execution Contracts & Scaffolding**
-
-Pages lack an upfront task-completion contract. Effective guides must open with:
-- **Outcome Promise:** Explicit imperative statement of what readers will accomplish
-- **Scaffolding Metadata Table:** Target audience, time-to-hello-world (in minutes), prerequisites, tested model versions, downloadable package link
-- **Entry Point:** Single-line `git clone` or `curl` command to download a complete, working package
-
-Current docs bury these details or omit them entirely, forcing readers to infer outcomes and prerequisites by reading prose.
-
-**Fix:** Every how-to guide MUST include frontmatter metadata + scaffolding table immediately after the title.
+**Fix:** Add a local `test_manifest.py` check and block bad files in CI.
 
 ---
 
-**P2 — Fragmented Snippets vs. Atomic Task-Execution Packages**
+**P1 — Docs do not start with the right setup**
 
-Guides force manual file assembly from isolated code snippets instead of providing downloadable, CI-tested packages. Developers must:
-- Copy individual code blocks from docs
-- Create directory structures manually
-- Guess correct indentation, file placement, and dependencies
-- Run unvalidated examples that may have drifted from current API versions
+Many pages do not say upfront what the reader will do, who the page is for, or how long it will take.
 
-Result: High friction, low completion rates, wasted developer time on setup instead of actual task work.
+A good guide should start with:
+- A clear outcome
+- A small table with key details
+- A simple `git clone` or `curl` command
 
-**Fix:** Every code example MUST be extracted from a downloadable package (git clone or curl). Packages include `SKILL.md`, executable scripts, references, and a local `test_manifest.py` validation test. All packages are validated in CI before publication.
+**Fix:** Put this setup right after the title on every how-to page.
+
+---
+
+**P2 — Snippets are not enough**
+
+Many docs use small code snippets that readers must copy and build by hand.
+
+This makes people:
+- Hunt for files
+- Guess folder structure
+- Fix spacing and setup issues
+- Waste time on setup instead of the task
+
+**Fix:** Give people complete, tested packages they can download and run.
 
 ---
 
@@ -60,9 +67,9 @@ Every how-to guide MUST include YAML frontmatter with these required fields:
 ```yaml
 title: How to [verb phrase]
 description: [One sentence outcome, 20–200 characters]
-version: 1.0.0  # Semantic versioning (MAJOR.MINOR.PATCH)
-package_name: tutorial-[slug]  # Must match regex ^[a-z0-9-]+$
-package_language: python  # One of: python, typescript, bash, json, yaml
+version: 1.0.0
+package_name: tutorial-[slug]
+package_language: python
 tested_against:
   - claude-opus-4-5
   - claude-3.5-sonnet
@@ -70,20 +77,20 @@ tested_against:
 
 **Scaffolding Metadata Table (Upfront Contract)**
 
-Immediately after `# Title`, include:
+Right after `# Title`, include:
 
 | Field | Content |
 |---|---|
-| **Target Audience** | Specific role or use case (e.g., "Python SDK users building with streaming") |
-| **Time-to-Hello-World** | Explicit minutes (e.g., "10 minutes") |
-| **Prerequisites** | Specific tool versions and requirements |
-| **Tested Against** | Claude models tested with this guide |
-| **Get Started** | `git clone` or `curl` command to download package |
+| **Target Audience** | Specific role or use case |
+| **Time-to-Hello-World** | Number of minutes to finish |
+| **Prerequisites** | Specific tools and versions |
+| **Tested Against** | Claude models used for testing |
+| **Get Started** | `git clone` or `curl` command |
 
 **Outcome Promise Blockquote**
 
 ```markdown
-> **Outcome Promise:** By the end of this guide, you will [imperative action verbs: create, deploy, validate, test].
+> **Outcome Promise:** By the end of this guide, you will create, deploy, validate, and test the task.
 ```
 
 ---
@@ -92,23 +99,23 @@ Immediately after `# Title`, include:
 
 Every guide with executable code MUST include a downloadable package. Packages MUST:
 
-1. **Include `test_manifest.py`** — Local validation script developers run before commit
+1. Include `test_manifest.py` for local checks
    ```bash
    python test_manifest.py
    # ✅ SKILL.md validation PASSED
    ```
 
-2. **Include `SKILL.md`** with required frontmatter + clear Claude instructions
+2. Include `SKILL.md` with required frontmatter and clear Claude instructions
 
-3. **Include optional supporting files** — Scripts, references, assets organized in `scripts/`, `references/`, `assets/` folders
+3. Include supporting files in `scripts/`, `references/`, and `assets/`
 
-4. **Pass CI validation** — All packages tested in nightly CI jobs:
-   - Schema validation (frontmatter conforms to DOC-SKILL-001)
-   - Manifest parsing (valid YAML, no syntax errors)
-   - Example execution (code snippets run without errors against Claude API)
-   - Package structure verification (required files present, no orphaned files)
+4. Pass CI checks for:
+   - Frontmatter schema
+   - YAML parsing
+   - Example execution
+   - Package structure
 
-5. **Be downloadable via single command**
+5. Be downloadable with one command
    ```bash
    git clone https://github.com/anthropic-ai/docs-examples/tree/main/tutorial-[slug]
    ```
@@ -117,67 +124,68 @@ Every guide with executable code MUST include a downloadable package. Packages M
 
 ## Code & Syntax Conformance Rules
 
-- **Every code block** MUST declare a language identifier (`python`, `bash`, `typescript`, `json`, `yaml`, `text`)
-- **Every variable** MUST use `<UPPERCASE_SNAKE_CASE>` convention (e.g., `<API_KEY>`, `<SKILL_NAME>`)
-- **Every procedural step** MUST begin with an imperative action verb: *Initialize*, *Configure*, *Create*, *Deploy*, *Validate*, *Test*, *Extract*
-- **No condescending language** — Avoid "simply," "just," "obviously," "easily"
-- **Active voice preferred** — "The API returns X" instead of "X is returned by the API"
+- Every code block MUST declare a language
+- Every variable MUST use `<UPPERCASE_SNAKE_CASE>`
+- Every step MUST begin with an action verb
+- Avoid weak words like “simply” and “just”
+- Use active voice
 
 ---
 
 ## Metrics & Observability
 
-Documentation effectiveness is measured by task completion velocity and schema integrity:
+Track success with a few clear measures:
 
 | Metric | Target | Why It Matters |
 |---|---|---|
-| **Doc-to-Run Latency** | < 60 seconds | Time from page load to first git clone or code execution event. Indicates whether entry point is obvious. |
-| **Package Download Rate** | > 70% | Percentage of page visits that result in downloading the working package. Indicates whether scaffolding table motivates action. |
-| **Local Validation Pass Rate** | > 90% | Percentage of downloaded packages that pass `test_manifest.py` on first run. Indicates quality of templates. |
-| **Snippet Execution Drift** | 0 failures | Nightly CI job executes all doc code examples against current Claude API. Detects stale or broken examples. |
+| **Doc-to-Run Latency** | Under 60 seconds | Shows whether the next step is clear |
+| **Package Download Rate** | Over 70% | Shows whether people trust the page |
+| **Local Validation Pass Rate** | Over 90% | Shows whether the package works |
+| **Snippet Execution Drift** | 0 failures | Shows whether docs stay current |
 
 ---
 
 ## Roadmap: Information Architecture
 
-Consolidate fragmented skill routes into execution-first hierarchy:
+Make the skills docs easier to browse:
 
-```
+```text
 [claude.com/docs/skills/](https://claude.com/docs/skills/)
-├── index.md                    # Overview & skill use cases
+├── index.md
 ├── how-to/
 │   ├── create-a-custom-skill.md
 │   ├── test-your-skill.md
-│   ├── package-for-upload.md
-│   └── ... (other how-tos)
+│   └── package-for-upload.md
 ├── reference/
 │   ├── skill-manifest-schema.md
 │   ├── errors.md
-│   └── examples/               # Downloadable packages
+│   └── examples/
 └── concepts/
     ├── when-to-use-skills.md
     ├── skill-scope.md
     └── composability.md
 ```
 
-**Action:** 301-redirect legacy routes (`/docs/skills/how-to` → `/docs/skills/how-to/create-a-custom-skill`) and update [claude.com/docs/llms.txt](https://claude.com/docs/llms.txt) to reference canonical URLs.
+**Action:** Redirect old routes and update `llms.txt` to point to the new structure.
 
 ---
 
 ## Key Principles
 
-1. **Docs as Executable Specifications** — Every operational guide is a specification: it declares what readers will accomplish, validates that specification in CI, and distributes a tested package.
-
-2. **Dual-Audience Design** — Human developers read the scaffolding table and outcome promise. AI agents (via llms.txt) parse valid YAML frontmatter and locate downloadable packages.
-
-3. **Zero Friction Entry** — A reader should be able to clone and run a working example within 60 seconds of landing on the page. The `git clone` command appears in the scaffolding table, not buried in prose.
-
-4. **Build-Time Validation** — Invalid manifests fail CI before publication. Developers and agents never encounter malformed specs.
-
-5. **Atomic Delivery** — Code examples are never isolated snippets. They're always part of a downloadable package with clear file structure, validated manifest, and passing tests.
+1. **Docs as Executable Specifications** — Every guide should say what it helps people do, check itself in CI, and ship a tested package.
+2. **Dual-Audience Design** — People read the table and outcome. AI tools read the frontmatter and find the package.
+3. **Zero Friction Entry** — Readers should be able to clone and run a working example in under 60 seconds.
+4. **Build-Time Validation** — Bad manifests should fail before publish time.
+5. **Atomic Delivery** — Examples should be complete packages, not loose snippets.
 
 ---
 
 ## Conclusion
 
-This audit proposes treating documentation not as information published to readers, but as engineered interfaces for task completion. By adding upfront execution contracts (outcome promise + scaffolding), enforcing schema validation (test_manifest.py in every package), and delivering atomic packages (not isolated snippets), Anthropic docs can serve both human developers and autonomous agents with clarity, speed, and confidence that examples work.
+This audit recommends a shift from publishing information to designing task completion.
+
+The best path is clear:
+- Start with the goal
+- Show the setup
+- Give a working package
+- Check everything before publish time
